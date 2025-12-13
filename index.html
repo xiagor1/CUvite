@@ -6,41 +6,1107 @@
 <title>Convite GAG</title>
 <style>
 /* ... (Seu CSS completo e inalterado) ... */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/* Mensagens subliminares (ajustando a animação para acomodar o tempo mais longo, se necessário.
-   Porém, mantendo o flash rápido para ser subliminar, e o JS fará o timing) */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(191, 247, 163, 0.03) 0%, transparent 50%);
+    animation: float 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, 30px) scale(1.1); }
+}
+
+/* Sangue realista escorrendo */
+.blood-drip {
+    position: fixed;
+    width: 2px;
+    background: linear-gradient(180deg, 
+        rgba(100, 0, 0, 1) 0%, 
+        rgba(120, 10, 10, 0.95) 15%,
+        rgba(139, 0, 0, 0.9) 30%,
+        rgba(139, 0, 0, 0.7) 60%,
+        rgba(100, 0, 0, 0.4) 85%,
+        transparent 100%);
+    animation: drip 5s ease-in infinite;
+    pointer-events: none;
+    z-index: 999;
+    filter: blur(0.3px);
+    box-shadow: 0 0 1px rgba(139, 0, 0, 0.8);
+}
+
+@keyframes drip {
+    0% { 
+        height: 0; 
+        opacity: 0;
+        filter: blur(0px);
+    }
+    5% { 
+        opacity: 1;
+        filter: blur(0.2px);
+    }
+    15% {
+        filter: blur(0.3px);
+    }
+    100% { 
+        height: 85vh; 
+        opacity: 0;
+        filter: blur(0.5px);
+    }
+}
+
+.blood-drip:nth-child(1) { 
+    left: 12%; 
+    animation-delay: 0.3s; 
+    width: 1.5px;
+    background: linear-gradient(180deg, 
+        rgba(90, 0, 0, 1) 0%, 
+        rgba(110, 5, 5, 0.95) 15%,
+        rgba(130, 0, 0, 0.85) 35%,
+        rgba(120, 0, 0, 0.6) 65%,
+        transparent 100%);
+}
+
+.blood-drip:nth-child(2) { 
+    left: 28%; 
+    animation-delay: 1.8s; 
+    width: 3px;
+    animation-duration: 6s;
+}
+
+.blood-drip:nth-child(3) { 
+    left: 47%; 
+    animation-delay: 0.9s; 
+    width: 2.5px;
+    animation-duration: 5.5s;
+}
+
+.blood-drip:nth-child(4) { 
+    left: 68%; 
+    animation-delay: 2.3s; 
+    width: 2px;
+}
+
+.blood-drip:nth-child(5) { 
+    left: 84%; 
+    animation-delay: 1.2s; 
+    width: 1.8px;
+    background: linear-gradient(180deg, 
+        rgba(95, 0, 0, 1) 0%, 
+        rgba(115, 8, 8, 0.93) 20%,
+        rgba(135, 0, 0, 0.8) 40%,
+        rgba(115, 0, 0, 0.5) 70%,
+        transparent 100%);
+}
+
+/* Escurecimento da tela ao clicar */
+.screen-darken {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: opacity 0.6s ease-out;
+}
+
+.screen-darken.active {
+    opacity: 0.85;
+}
+
+.screen-flash {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(139, 0, 0, 0.6) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    animation: flash 0.2s ease-out;
+}
+
+@keyframes flash {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+.horror-transition {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99998;
+    pointer-events: none;
+}
+
+.horror-transition.active {
+    display: flex;
+    animation: horrorFade 4s ease-in-out forwards;
+}
+
+@keyframes horrorFade {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.horror-transition svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: slowZoom 4s ease-in-out;
+}
+
+@keyframes slowZoom {
+    0% { transform: scale(1.5); filter: brightness(0.3); }
+    50% { transform: scale(1); filter: brightness(0.8); }
+    100% { transform: scale(1.2); filter: brightness(0.4); }
+}
+
+.smoke-particle {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(100, 100, 100, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9990;
+    animation: smokeRise 3s ease-out forwards;
+}
+
+@keyframes smokeRise {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+    20% { opacity: 0.8; }
+    100% { opacity: 0; transform: translate(var(--drift-x), -200px) scale(2); }
+}
+
+#audioToggle {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(191, 247, 163, 0.3);
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(191, 247, 163, 0.1);
+    color: #BFF7A3;
+}
+
+#audioToggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.08);
+}
+
+#app-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 500px;
+    transition: opacity 0.4s ease;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 60px 45px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(191, 247, 163, 0.08);
+    text-align: center;
+    position: relative;
+    border: 1px solid rgba(191, 247, 163, 0.25);
+    animation: fadeIn 0.9s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(35px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.blur-overlay {
+    position: relative;
+    cursor: pointer;
+}
+
+.blur-content {
+    filter: blur(15px);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.blur-overlay:hover .blur-content {
+    filter: blur(12px);
+    opacity: 0.6;
+}
+
+.click-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: #BFF7A3;
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(191, 247, 163, 0.8);
+    pointer-events: none;
+    animation: pulse-hint 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes pulse-hint {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+}
+
+.gagsaw-image {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 35px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(191, 247, 163, 0.4);
+    box-shadow: 0 0 30px rgba(191, 247, 163, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 30px rgba(191, 247, 163, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5); transform: scale(1); }
+    50% { box-shadow: 0 0 50px rgba(191, 247, 163, 0.5), 0 0 80px rgba(191, 247, 163, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.6); transform: scale(1.03); }
+}
+
+.gagsaw-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1);
+}
+
+.page {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.page.active {
+    display: block;
+    opacity: 1;
+}
+
+.next {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 16px 45px;
+    background: rgba(191, 247, 163, 0.15);
+    backdrop-filter: blur(10px);
+    color: #BFF7A3;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    border: 2px solid rgba(191, 247, 163, 0.4);
+    box-shadow: 0 0 20px rgba(191, 247, 163, 0.3);
+    cursor: pointer;
+}
+
+.next:hover {
+    background: rgba(191, 247, 163, 0.25);
+    border-color: rgba(191, 247, 163, 0.6);
+    transform: translateY(-3px);
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 60px 45px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(191, 247, 163, 0.08);
+    border: 1px solid rgba(191, 247, 163, 0.25);
+    text-align: center;
+}
+
+.info-card h2 {
+    font-size: 2.5rem;
+    color: #BFF7A3;
+    margin-bottom: 35px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);
+}
+
+.info-card p {
+    color: #d0f0c0;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    margin-bottom: 28px;
+    font-weight: 300;
+}
+
+.info-card ul {
+    list-style: none;
+    text-align: left;
+    margin: 35px 0;
+    padding: 30px 0;
+    border-top: 1px solid rgba(191, 247, 163, 0.2);
+    border-bottom: 1px solid rgba(191, 247, 163, 0.2);
+}
+
+.info-card li {
+    color: #e8f8e0;
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+    padding-left: 30px;
+    position: relative;
+    line-height: 1.7;
+    font-weight: 300;
+}
+
+.info-card li:last-child {
+    margin-bottom: 0;
+}
+
+.info-card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    background: #BFF7A3;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(191, 247, 163, 0.8);
+}
+
+.info-card strong {
+    font-weight: 600;
+    color: #BFF7A3;
+}
+
+#final-gag {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 70px 45px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(191, 247, 163, 0.08);
+    border: 1px solid rgba(191, 247, 163, 0.25);
+    text-align: center;
+    animation: fadeIn 0.9s ease, jumpBox 0.8s ease-in-out infinite;
+    font-size: 1.8rem;
+    color: #e8f8e0;
+    line-height: 1.8;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animação de pulo do quadrado */
+@keyframes jumpBox {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Sangue escorrendo dentro do quadrado - realista */
+.blood-drip-inside {
+    position: absolute;
+    width: 2px;
+    background: linear-gradient(180deg, 
+        rgba(100, 0, 0, 1) 0%, 
+        rgba(120, 10, 10, 0.95) 10%,
+        rgba(139, 0, 0, 0.9) 25%,
+        rgba(139, 0, 0, 0.75) 50%,
+        rgba(120, 0, 0, 0.5) 75%,
+        rgba(100, 0, 0, 0.3) 90%,
+        transparent 100%);
+    animation: dripInside 6s ease-in infinite;
+    pointer-events: none;
+    z-index: 1;
+    filter: blur(0.2px);
+    box-shadow: 0 0 0.5px rgba(139, 0, 0, 0.6);
+}
+
+@keyframes dripInside {
+    0% {
+        height: 0;
+        opacity: 0;
+    }
+    8% {
+        opacity: 1;
+    }
+    100% {
+        height: calc(100% - 60px);
+        opacity: 0;
+    }
+}
+
+.blood-drip-inside:nth-child(1) { 
+    left: 18%; 
+    animation-delay: 0.5s; 
+    width: 1.5px;
+    animation-duration: 5.5s;
+}
+
+.blood-drip-inside:nth-child(2) { 
+    left: 35%; 
+    animation-delay: 1.8s; 
+    width: 2.5px;
+    animation-duration: 7s;
+}
+
+.blood-drip-inside:nth-child(3) { 
+    left: 52%; 
+    animation-delay: 0.9s; 
+    width: 2px;
+}
+
+.blood-drip-inside:nth-child(4) { 
+    left: 68%; 
+    animation-delay: 2.5s; 
+    width: 1.8px;
+    animation-duration: 6.5s;
+}
+
+.blood-drip-inside:nth-child(5) { 
+    left: 82%; 
+    animation-delay: 1.3s; 
+    width: 2.2px;
+    animation-duration: 5.8s;
+}
+
+#final-gag-text {
+    position: relative;
+    z-index: 2;
+}
+
+/* Efeitos de glitch e distorção */
+.glitch-effect {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9997;
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    display: none;
+}
+
+.glitch-effect.active {
+    display: block;
+    animation: glitchFlash 0.5s steps(5) 3;
+}
+
+@keyframes glitchFlash {
+    0%, 100% { opacity: 0; }
+    10%, 30%, 50%, 70%, 90% { opacity: 1; }
+    20%, 40%, 60%, 80% { opacity: 0; }
+}
+
+/* Efeito VHS */
+.vhs-effect {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 2px);
+    pointer-events: none;
+    z-index: 9996;
+    opacity: 0;
+    animation: vhsScan 0.1s linear infinite;
+    display: none;
+}
+
+.vhs-effect.active {
+    display: block;
+    opacity: 0.4;
+}
+
+@keyframes vhsScan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(2px); }
+}
+
+/* Olhos demoníacos */
+.demon-eyes {
+    position: fixed;
+    width: 80px;
+    height: 30px;
+    z-index: 9991;
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+}
+
+.demon-eyes.active {
+    display: block;
+    animation: eyesBlink 5s ease-in-out forwards;
+}
+
+@keyframes eyesBlink {
+    0%, 100% { opacity: 0; }
+    10% { opacity: 1; }
+    15% { opacity: 0; }
+    20% { opacity: 1; }
+    90% { opacity: 1; }
+}
+
+/* Sombras rastejando */
+.shadow-creep {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9;
+    display: none;
+}
+
+.shadow-creep.active {
+    display: block;
+    animation: shadowRise 4s ease-out forwards;
+}
+
+@keyframes shadowRise {
+    0% { opacity: 0; height: 0; }
+    30% { opacity: 1; height: 250px; }
+    70% { opacity: 1; height: 250px; }
+    100% { opacity: 0; height: 250px; }
+}
+
+/* Risada fantasma */
+.laugh-text {
+    position: fixed;
+    font-size: 2rem;
+    font-family: serif;
+    color: rgba(139, 0, 0, 0.6);
+    font-style: italic;
+    pointer-events: none;
+    z-index: 9992;
+    opacity: 0;
+    display: none;
+}
+
+.laugh-text.active {
+    display: block;
+    animation: laughFloat 6s ease-out forwards;
+}
+
+@keyframes laughFloat {
+    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+    15% { opacity: 0.7; }
+    85% { opacity: 0.7; }
+    100% { opacity: 0; transform: scale(1.5) rotate(10deg); }
+}
+
+/* Batimento cardíaco */
+.heartbeat-pulse {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(139, 0, 0, 0.4) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9993;
+    display: none;
+}
+
+.heartbeat-pulse.active {
+    display: block;
+    animation: heartbeat 1.5s ease-in-out 4 forwards;
+}
+
+@keyframes heartbeat {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    15% { opacity: 0.5; transform: scale(1.02); }
+    30% { opacity: 0; transform: scale(1); }
+    45% { opacity: 0.6; transform: scale(1.03); }
+    60% { opacity: 0; transform: scale(1); }
+}
+
+/* Fumaça ambiente */
+.ambient-fog {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(50, 50, 50, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 8;
+    opacity: 0;
+    display: none;
+}
+
+.ambient-fog.active {
+    display: block;
+    animation: fogDrift 15s ease-in-out infinite;
+}
+
+@keyframes fogDrift {
+    0%, 100% { opacity: 0; transform: translate(0, 0) scale(1); }
+    25% { opacity: 0.4; transform: translate(50px, -30px) scale(1.3); }
+    50% { opacity: 0.5; transform: translate(-30px, 40px) scale(1.5); }
+    75% { opacity: 0.3; transform: translate(40px, -20px) scale(1.2); }
+}
+
+/* Whispers visuais */
+.whisper-text {
+    position: fixed;
+    font-size: 1.2rem;
+    font-family: serif;
+    color: rgba(191, 247, 163, 0.3);
+    font-style: italic;
+    pointer-events: none;
+    z-index: 9994;
+    opacity: 0;
+    display: none;
+}
+
+.whisper-text.active {
+    display: block;
+    animation: whisperFade 8s ease-out forwards;
+}
+
+@keyframes whisperFade {
+    0% { opacity: 0; transform: translateX(-50px); }
+    20% { opacity: 0.5; }
+    80% { opacity: 0.5; }
+    100% { opacity: 0; transform: translateX(50px); }
+}
+
+/* Olhos que seguem o cursor */
+.following-eyes {
+    position: fixed;
+    width: 100px;
+    height: 40px;
+    z-index: 9995;
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+}
+
+.following-eyes.active {
+    display: block;
+    animation: eyesAppear 1s ease-out forwards;
+}
+
+@keyframes eyesAppear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.eye {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #ff0000 15%, #8b0000 40%, #000 70%);
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.eye:nth-child(1) { left: 0; }
+.eye:nth-child(2) { right: 0; }
+
+.pupil {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: #000;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+}
+
+/* Mensagens subliminares */
 .subliminal-message {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    font-weight: 900;
-    color: #ff0000;
-    text-shadow: 0 0 30px #ff0000;
-    z-index: 99999;
-    pointer-events: none;
-    background: rgba(0, 0, 0, 0.9);
-    /* Mantém o flash curto no CSS, o JS controla a duração total */
-    animation: subliminalFlash 0.15s ease-out; 
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #ff0000;
+    text-shadow: 0 0 30px #ff0000;
+    z-index: 99999;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.9);
+    animation: subliminalFlash 0.15s ease-out;
 }
 
 .subliminal-message.active {
-    display: flex;
+    display: flex;
 }
 
 @keyframes subliminalFlash {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
-/* ... (Restante do seu CSS inalterado) ... */
+/* Rachadura na tela */
+.screen-crack {
+    position: fixed;
+    inset: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><path d="M 400 0 L 420 150 L 380 150 Z M 400 600 L 420 450 L 380 450 Z M 0 300 L 150 320 L 150 280 Z M 800 300 L 650 320 L 650 280 Z M 200 100 L 600 500 M 600 100 L 200 500" stroke="rgba(255,255,255,0.3)" stroke-width="2" fill="none"/></svg>') center/cover no-repeat;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
+}
+
+.screen-crack.active {
+    display: block;
+    animation: crackAppear 0.3s ease-out forwards;
+}
+
+@keyframes crackAppear {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+    100% { opacity: 0.5; transform: scale(1); }
+}
+
+/* Sombra de figura humana */
+.shadow-figure {
+    position: fixed;
+    bottom: -100%;
+    width: 200px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.9) 0%, transparent 70%);
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+}
+
+.shadow-figure.active {
+    display: block;
+    animation: figureWalk 3s ease-in-out forwards;
+}
+
+@keyframes figureWalk {
+    0% { bottom: -100%; opacity: 0; transform: translateX(-50px); }
+    30% { opacity: 0.8; }
+    70% { opacity: 0.8; }
+    100% { bottom: -100%; opacity: 0; transform: translateX(150vw); }
+}
+
+/* Pegadas de sangue */
+.blood-footprint {
+    position: fixed;
+    width: 60px;
+    height: 90px;
+    background: radial-gradient(ellipse, rgba(139, 0, 0, 0.6) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 7;
+    display: none;
+}
+
+.blood-footprint.active {
+    display: block;
+    animation: footprintAppear 0.5s ease-out forwards;
+}
+
+@keyframes footprintAppear {
+    0% { opacity: 0; transform: scale(0); }
+    100% { opacity: 0.7; transform: scale(1); }
+}
+
+/* Mãos/garras das laterais */
+.creepy-hand {
+    position: fixed;
+    width: 150px;
+    height: 150px;
+    z-index: 9994;
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+}
+
+.creepy-hand.active {
+    display: block;
+    animation: handGrab 2s ease-out forwards;
+}
+
+@keyframes handGrab {
+    0% { opacity: 0; transform: translateX(0); }
+    30% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(0); }
+}
+
+.creepy-hand.left {
+    left: -150px;
+    animation: handGrabLeft 2s ease-out forwards;
+}
+
+.creepy-hand.right {
+    right: -150px;
+    animation: handGrabRight 2s ease-out forwards;
+}
+
+@keyframes handGrabLeft {
+    0% { opacity: 0; left: -150px; }
+    30% { opacity: 1; left: 50px; }
+    70% { opacity: 1; left: 50px; }
+    100% { opacity: 0; left: -150px; }
+}
+
+@keyframes handGrabRight {
+    0% { opacity: 0; right: -150px; }
+    30% { opacity: 1; right: 50px; }
+    70% { opacity: 1; right: 50px; }
+    100% { opacity: 0; right: -150px; }
+}
+
+/* Mancha de sangue crescendo */
+.blood-stain {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, rgba(100, 0, 0, 0.9) 0%, rgba(139, 0, 0, 0.7) 50%, transparent 100%);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 6;
+    display: none;
+}
+
+.blood-stain.active {
+    display: block;
+    animation: stainGrow 4s ease-out forwards;
+}
+
+@keyframes stainGrow {
+    0% { opacity: 0; width: 10px; height: 10px; }
+    20% { opacity: 0.8; }
+    100% { opacity: 0.6; width: 200px; height: 200px; }
+}
+
+@media (max-width: 600px) {
+    .card, .info-card, #final-gag { padding: 50px 35px; }
+    .click-hint { font-size: 2.5rem; }
+    .gagsaw-image { width: 160px; height: 160px; }
+    .info-card h2 { font-size: 2rem; }
+    .subliminal-message { font-size: 3rem; }
+}
 </style>
 </head>
 <body>
 
-  <script>
+  <div class="blood-drip"></div>
+  <div class="blood-drip"></div>
+  <div class="blood-drip"></div>
+  <div class="blood-drip"></div>
+  <div class="blood-drip"></div>
+
+    <div class="screen-darken" id="screenDarken"></div>
+
+    
+    <div class="following-eyes" id="followingEyes1" style="left: 50px; top: 30%;">
+    <div class="eye"><div class="pupil" id="pupil1"></div></div>
+    <div class="eye"><div class="pupil" id="pupil2"></div></div>
+  </div>
+  
+  <div class="following-eyes" id="followingEyes2" style="right: 50px; top: 50%;">
+    <div class="eye"><div class="pupil" id="pupil3"></div></div>
+    <div class="eye"><div class="pupil" id="pupil4"></div></div>
+  </div>
+
+    <div class="subliminal-message" id="subliminalMsg"></div>
+
+    <div class="screen-crack" id="screenCrack"></div>
+
+    <div class="shadow-figure" id="shadowFigure"></div>
+
+    <div class="creepy-hand left" id="creepyHandLeft">
+    <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 10 80 Q 15 60 20 80 L 25 120 L 20 120 Z" fill="#2a2a2a"/>
+      <path d="M 25 70 Q 30 50 35 70 L 40 120 L 35 120 Z" fill="#2a2a2a"/>
+      <path d="M 40 75 Q 45 55 50 75 L 55 120 L 50 120 Z" fill="#2a2a2a"/>
+      <path d="M 55 80 Q 60 60 65 80 L 70 120 L 65 120 Z" fill="#2a2a2a"/>
+      <ellipse cx="45" cy="110" rx="25" ry="20" fill="#2a2a2a"/>
+    </svg>
+  </div>
+
+  <div class="creepy-hand right" id="creepyHandRight">
+    <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 140 80 Q 135 60 130 80 L 125 120 L 130 120 Z" fill="#2a2a2a"/>
+      <path d="M 125 70 Q 120 50 115 70 L 110 120 L 115 120 Z" fill="#2a2a2a"/>
+      <path d="M 110 75 Q 105 55 100 75 L 95 120 L 100 120 Z" fill="#2a2a2a"/>
+      <path d="M 95 80 Q 90 60 85 80 L 80 120 L 85 120 Z" fill="#2a2a2a"/>
+      <ellipse cx="105" cy="110" rx="25" ry="20" fill="#2a2a2a"/>
+    </svg>
+  </div>
+
+    <div class="blood-footprint" id="footprint1"></div>
+  <div class="blood-footprint" id="footprint2"></div>
+  <div class="blood-footprint" id="footprint3"></div>
+
+    <div class="blood-stain" id="bloodStain"></div>
+
+    <audio id="screamSound" src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnODyvmwhBTGH0fPTgjMGHm7A7+OZSA0PVqzn77FeFg=="></audio>
+  <audio id="breathSound"></audio>
+  <audio id="laughSound"></audio>
+
+    <div class="glitch-effect" id="glitchEffect"></div>
+  <div class="vhs-effect" id="vhsEffect"></div>
+  <div class="shadow-creep" id="shadowCreep"></div>
+  <div class="heartbeat-pulse" id="heartbeatPulse"></div>
+  
+    <div class="ambient-fog" id="ambientFog1" style="left: 10%; top: 20%;"></div>
+  <div class="ambient-fog" id="ambientFog2" style="right: 15%; top: 40%;"></div>
+  <div class="ambient-fog" id="ambientFog3" style="left: 20%; bottom: 30%;"></div>
+  
+    <div class="demon-eyes" id="demonEyesLeft" style="left: 20px; top: 30%;">
+    <svg viewBox="0 0 80 30" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="15" cy="15" rx="12" ry="14" fill="#8b0000"/>
+      <ellipse cx="65" cy="15" rx="12" ry="14" fill="#8b0000"/>
+      <circle cx="15" cy="15" r="6" fill="#000"/>
+      <circle cx="65" cy="15" r="6" fill="#000"/>
+      <circle cx="13" cy="13" r="2" fill="#ff0000"/>
+      <circle cx="63" cy="13" r="2" fill="#ff0000"/>
+    </svg>
+  </div>
+  
+  <div class="demon-eyes" id="demonEyesRight" style="right: 20px; top: 40%;">
+    <svg viewBox="0 0 80 30" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="15" cy="15" rx="12" ry="14" fill="#8b0000"/>
+      <ellipse cx="65" cy="15" rx="12" ry="14" fill="#8b0000"/>
+      <circle cx="15" cy="15" r="6" fill="#000"/>
+      <circle cx="65" cy="15" r="6" fill="#000"/>
+      <circle cx="13" cy="13" r="2" fill="#ff0000"/>
+      <circle cx="63" cy="13" r="2" fill="#ff0000"/>
+    </svg>
+  </div>
+
+  <div class="horror-transition" id="horrorTransition1">
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bgGrad">
+          <stop offset="0%" style="stop-color:#1a0000;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+        </radialGradient>
+      </defs>
+      <rect width="400" height="400" fill="url(#bgGrad)"/>
+      <ellipse cx="200" cy="180" rx="80" ry="95" fill="#f0f0f0"/>
+      <path d="M 120 140 Q 110 100 120 80 Q 140 60 160 70 Q 180 50 200 55 Q 220 50 240 70 Q 260 60 280 80 Q 290 100 280 140" fill="#ff6600" opacity="0.9"/>
+      <ellipse cx="175" cy="165" rx="12" ry="18" fill="#000"/>
+      <ellipse cx="225" cy="165" rx="12" ry="18" fill="#000"/>
+      <circle cx="177" cy="162" r="4" fill="#ff0000"/>
+      <circle cx="227" cy="162" r="4" fill="#ff0000"/>
+      <circle cx="200" cy="190" r="12" fill="#ff0000"/>
+      <path d="M 160 210 Q 200 240 240 210" stroke="#ff0000" stroke-width="4" fill="none"/>
+      <path d="M 165 215 L 168 225 M 180 220 L 182 232 M 200 225 L 200 238 M 220 220 L 218 232 M 235 215 L 232 225" stroke="#fff" stroke-width="2"/>
+      <text x="200" y="340" font-family="serif" font-size="32" fill="#ff0000" text-anchor="middle" font-weight="bold">YOU'LL FLOAT TOO...</text>
+    </svg>
+  </div>
+
+  <div class="horror-transition" id="horrorTransition2">
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="400" fill="#000000"/>
+      <path d="M 200 80 Q 160 85 140 110 Q 130 140 135 170 Q 140 210 155 240 Q 170 270 200 280 Q 230 270 245 240 Q 260 210 265 170 Q 270 140 260 110 Q 240 85 200 80 Z" fill="#f5f5f5" stroke="#1a1a1a" stroke-width="2"/>
+      <ellipse cx="175" cy="150" rx="18" ry="35" fill="#000" transform="rotate(-15 175 150)"/>
+      <ellipse cx="225" cy="150" rx="18" ry="35" fill="#000" transform="rotate(15 225 150)"/>
+      <ellipse cx="200" cy="210" rx="15" ry="35" fill="#000"/>
+      <text x="200" y="350" font-family="serif" font-size="28" fill="#ff0000" text-anchor="middle" font-weight="bold">WHAT'S YOUR FAVORITE</text>
+      <text x="200" y="380" font-family="serif" font-size="28" fill="#ff0000" text-anchor="middle" font-weight="bold">SCARY MOVIE?</text>
+    </svg>
+  </div>
+
+  <audio id="bgAudio" src="babi2k.mp3" loop></audio>
+  <button id="audioToggle">🔊</button>
+
+  <div id="app-container">
+    <div id="page1" class="page active">
+      <div class="blur-overlay" id="blurOverlay">
+        <div class="click-hint">CLICA AQUI PUT@</div>
+        <div class="blur-content">
+          <div class="card">
+            <h2 style="font-size: 2.5rem; color: #BFF7A3; margin-bottom: 35px; font-weight: 700; letter-spacing: 3px; text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);">ATENÇÃO, GAG!</h2>
+            <p style="color: #d0f0c0; font-size: 1.15rem; line-height: 1.9; margin-bottom: 28px; font-weight: 300;">O evento mais GAG do ano será:</p>
+            <ul style="list-style: none; text-align: left; margin: 35px 0; padding: 30px 0; border-top: 1px solid rgba(191, 247, 163, 0.2); border-bottom: 1px solid rgba(191, 247, 163, 0.2);">
+              <li style="color: #e8f8e0; font-size: 1.05rem; margin-bottom: 20px; padding-left: 30px; position: relative; line-height: 1.7; font-weight: 300;"><strong style="font-weight: 600; color: #BFF7A3;">DATA:</strong> 31 de Dezembro, 2025</li>
+              <li style="color: #e8f8e0; font-size: 1.05rem; margin-bottom: 20px; padding-left: 30px; position: relative; line-height: 1.7; font-weight: 300;"><strong style="font-weight: 600; color: #BFF7A3;">HORA:</strong> A partir das 22h00</li>
+              <li style="color: #e8f8e0; font-size: 1.05rem; margin-bottom: 0; padding-left: 30px; position: relative; line-height: 1.7; font-weight: 300;"><strong style="font-weight: 600; color: #BFF7A3;">LOCAL:</strong> A Casa do Puto, Rua das Gags, Nº 69</li>
+            </ul>
+            <p style="color: #d0f0c0; font-size: 1.15rem; line-height: 1.9; margin-bottom: 28px; font-weight: 300;">... E prepara-te para a regra de vestuário!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page2" class="page">
+      <div class="info-card">
+        <div class="gagsaw-image">
+          <img src="GAGsaw.jpg" alt="GAGsaw">
+        </div>
+        <h2>ATENÇÃO, GAG!</h2>
+        <p>O evento mais GAG do ano será:</p>
+        <ul>
+          <li><strong>DATA:</strong> 31 de Dezembro, 2025 (Fim de Ano)</li>
+          <li><strong>HORA:</strong> A partir das 22h00</li>
+          <li><strong>LOCAL:</strong> A Casa do Puto, Rua das Gags, Nº 69</li>
+        </ul>
+        <p>... E prepara-te para a regra de vestuário!</p>
+        <button class="next" data-page="page3">PRÓXIMO</button>
+      </div>
+    </div>
+
+    <div id="page3" class="page">
+      <div id="final-gag">
+        <div class="blood-drip-inside"></div>
+        <div class="blood-drip-inside"></div>
+        <div class="blood-drip-inside"></div>
+        <div class="blood-drip-inside"></div>
+        <div class="blood-drip-inside"></div>
+        <div id="final-gag-text">
+          MENTIRA SEUS OTÁRIOS 😈<br><br>
+          PODEM IR DO JEITO QUE QUISEREM 👍🏻
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
 document.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('bgAudio');
     const audioToggle = document.getElementById('audioToggle');
@@ -79,33 +1145,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let audioPlayed = false;
 
-    // --- LÓGICA DE MENSAGENS SUBLIMINARES (AQUI ESTÁ A MUDANÇA) ---
-    
-    // Aumentei o tempo de exibição para 3500ms (3.5 segundos) no setTimeout.
-    // O intervalo entre as mensagens também foi ajustado para 15 segundos para
-    // dar tempo para a mensagem desaparecer completamente antes da próxima.
-    const SUBLIMINAL_DURATION = 3500; // 3.5s
-    const SUBLIMINAL_INTERVAL = 15000; // 15 segundos entre cada mensagem
+    // AUMENTAR O TEMPO DAS MENSAGENS SUBLIMINARES PARA 3.5s (3500ms)
+    const SUBLIMINAL_DURATION = 3500; 
+    // Aumentei o intervalo para 10s (10000ms) para que a mensagem de 3.5s não se sobreponha à próxima.
+    const SUBLIMINAL_INTERVAL = 10000; 
     
     function runSubliminalMessages() {
         const messages = ["JÁ ESTÁS MORTO", "OLHA PARA TRÁS", "CONFIA EM NINGUÉM", "TU NÃO ESTÁS SÓ"];
         let index = 0;
         
         setInterval(() => {
-            if (subliminalMsg.classList.contains('active')) return; // Evita sobreposição
-
             subliminalMsg.textContent = messages[index];
             subliminalMsg.classList.add('active'); 
 
             setTimeout(() => {
                 subliminalMsg.classList.remove('active');
-            }, SUBLIMINAL_DURATION); // 3500ms (3.5 segundos) de exibição
+            }, SUBLIMINAL_DURATION); // ALTERADO PARA 3500ms
 
             index = (index + 1) % messages.length;
-        }, SUBLIMINAL_INTERVAL);
+        }, SUBLIMINAL_INTERVAL); // ALTERADO PARA 10000ms
     }
-
-    // --- FIM DA LÓGICA DE MENSAGENS SUBLIMINARES ---
 
     // Função principal para disparar efeitos de terror
     function triggerHorrorEffect(effect, duration, className = 'active') {
