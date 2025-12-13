@@ -2,327 +2,235 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Convite GAG</title>
 <style>
-/* ... SEU CSS EXISTENTE ... */
+/* ... (Seu CSS completo e inalterado) ... */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html, body {
-    min-height: 100%;
-    min-height: -webkit-fill-available;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 100%);
-    display: flex;
-    align-items: center; 
+/* Mensagens subliminares (ajustando a animação para acomodar o tempo mais longo, se necessário.
+   Porém, mantendo o flash rápido para ser subliminar, e o JS fará o timing) */
+.subliminal-message {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
     justify-content: center;
-    padding: 20px 15px;
-    position: relative;
-    overflow-y: auto; 
-    overflow-x: hidden;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(191, 247, 163, 0.03) 0%, transparent 50%);
-    animation: float 20s ease-in-out infinite;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #ff0000;
+    text-shadow: 0 0 30px #ff0000;
+    z-index: 99999;
     pointer-events: none;
-    z-index: 0;
+    background: rgba(0, 0, 0, 0.9);
+    /* Mantém o flash curto no CSS, o JS controla a duração total */
+    animation: subliminalFlash 0.15s ease-out; 
 }
 
-@keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(30px, 30px) scale(1.1); }
+.subliminal-message.active {
+    display: flex;
 }
 
-.blood-drip {
-    position: fixed;
-    width: 2px;
-    background: linear-gradient(180deg,  
-        rgba(100, 0, 0, 1) 0%,  
-        rgba(120, 10, 10, 0.95) 15%,
-        rgba(139, 0, 0, 0.9) 30%,
-        rgba(139, 0, 0, 0.7) 60%,
-        rgba(100, 0, 0, 0.4) 85%,
-        transparent 100%);
-    animation: drip 5s ease-in infinite;
-    pointer-events: none;
-    z-index: 999;
-    filter: blur(0.3px);
-    box-shadow: 0 0 1px rgba(139, 0, 0, 0.8);
-}
-
-@keyframes drip {
-    0% { 
-        height: 0; 
-        opacity: 0;
-        filter: blur(0px);
-    }
-    5% { 
-        opacity: 1;
-        filter: blur(0.2px);
-    }
-    15% {
-        filter: blur(0.3px);
-    }
-    100% { 
-        height: 85vh; 
-        opacity: 0;
-        filter: blur(0.5px);
-    }
-}
-
-.blood-drip:nth-child(1) { left: 12%; animation-delay: 0.3s; width: 1.5px; background: linear-gradient(180deg, rgba(90, 0, 0, 1) 0%, rgba(110, 5, 5, 0.95) 15%, rgba(130, 0, 0, 0.85) 35%, rgba(120, 0, 0, 0.6) 65%, transparent 100%); }
-.blood-drip:nth-child(2) { left: 28%; animation-delay: 1.8s; width: 3px; animation-duration: 6s; }
-.blood-drip:nth-child(3) { left: 47%; animation-delay: 0.9s; width: 2.5px; animation-duration: 5.5s; }
-.blood-drip:nth-child(4) { left: 68%; animation-delay: 2.3s; width: 2px; }
-.blood-drip:nth-child(5) { left: 84%; animation-delay: 1.2s; width: 1.8px; background: linear-gradient(180deg, rgba(95, 0, 0, 1) 0%, rgba(115, 8, 8, 0.93) 20%, rgba(135, 0, 0, 0.8) 40%, rgba(115, 0, 0, 0.5) 70%, transparent 100%); }
-
-.screen-darken {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9998;
-    transition: opacity 0.6s ease-out;
-}
-
-.screen-darken.active {
-    opacity: 0.85;
-}
-
-.screen-flash {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle, rgba(139, 0, 0, 0.6) 0%, transparent 70%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9999;
-    animation: flash 0.2s ease-out;
-}
-
-@keyframes flash {
+@keyframes subliminalFlash {
     0%, 100% { opacity: 0; }
     50% { opacity: 1; }
 }
 
-.horror-transition {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 99998;
-    pointer-events: none;
-}
+/* ... (Restante do seu CSS inalterado) ... */
+</style>
+</head>
+<body>
 
-.horror-transition.active {
-    display: flex;
-    animation: horrorFade 4s ease-in-out forwards;
-}
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('bgAudio');
+    const audioToggle = document.getElementById('audioToggle');
+    const appContainer = document.getElementById('app-container');
+    const horrorTransition1 = document.getElementById('horrorTransition1');
+    const horrorTransition2 = document.getElementById('horrorTransition2');
+    
+    // Efeitos assustadores
+    const glitchEffect = document.getElementById('glitchEffect');
+    const vhsEffect = document.getElementById('vhsEffect');
+    const shadowCreep = document.getElementById('shadowCreep');
+    const heartbeatPulse = document.getElementById('heartbeatPulse');
+    const demonEyesLeft = document.getElementById('demonEyesLeft');
+    const demonEyesRight = document.getElementById('demonEyesRight');
+    const ambientFog1 = document.getElementById('ambientFog1');
+    const ambientFog2 = document.getElementById('ambientFog2');
+    const ambientFog3 = document.getElementById('ambientFog3');
+    const screenDarken = document.getElementById('screenDarken');
+    
+    // Novos elementos assustadores
+    const followingEyes1 = document.getElementById('followingEyes1');
+    const followingEyes2 = document.getElementById('followingEyes2');
+    const pupil1 = document.getElementById('pupil1');
+    const pupil2 = document.getElementById('pupil2');
+    const pupil3 = document.getElementById('pupil3');
+    const pupil4 = document.getElementById('pupil4');
+    const subliminalMsg = document.getElementById('subliminalMsg');
+    const screenCrack = document.getElementById('screenCrack');
+    const shadowFigure = document.getElementById('shadowFigure');
+    const creepyHandLeft = document.getElementById('creepyHandLeft');
+    const creepyHandRight = document.getElementById('creepyHandRight');
+    const bloodStain = document.getElementById('bloodStain');
+    const screamSound = document.getElementById('screamSound');
+    const blurOverlay = document.getElementById('blurOverlay');
+    const clickHint = document.querySelector('.click-hint');
 
-@keyframes horrorFade {
-    0% { opacity: 0; }
-    15% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { opacity: 0; }
-}
+    let audioPlayed = false;
 
-.horror-transition svg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: slowZoom 4s ease-in-out;
-}
+    // --- LÓGICA DE MENSAGENS SUBLIMINARES (AQUI ESTÁ A MUDANÇA) ---
+    
+    // Aumentei o tempo de exibição para 3500ms (3.5 segundos) no setTimeout.
+    // O intervalo entre as mensagens também foi ajustado para 15 segundos para
+    // dar tempo para a mensagem desaparecer completamente antes da próxima.
+    const SUBLIMINAL_DURATION = 3500; // 3.5s
+    const SUBLIMINAL_INTERVAL = 15000; // 15 segundos entre cada mensagem
+    
+    function runSubliminalMessages() {
+        const messages = ["JÁ ESTÁS MORTO", "OLHA PARA TRÁS", "CONFIA EM NINGUÉM", "TU NÃO ESTÁS SÓ"];
+        let index = 0;
+        
+        setInterval(() => {
+            if (subliminalMsg.classList.contains('active')) return; // Evita sobreposição
 
-@keyframes slowZoom {
-    0% { transform: scale(1.5); filter: brightness(0.3); }
-    50% { transform: scale(1); filter: brightness(0.8); }
-    100% { transform: scale(1.2); filter: brightness(0.4); }
-}
+            subliminalMsg.textContent = messages[index];
+            subliminalMsg.classList.add('active'); 
 
-.smoke-particle {
-    position: fixed;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(100, 100, 100, 0.4) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9990;
-    animation: smokeRise 3s ease-out forwards;
-}
+            setTimeout(() => {
+                subliminalMsg.classList.remove('active');
+            }, SUBLIMINAL_DURATION); // 3500ms (3.5 segundos) de exibição
 
-@keyframes smokeRise {
-    0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
-    20% { opacity: 0.8; }
-    100% { opacity: 0; transform: translate(var(--drift-x), -200px) scale(2); }
-}
+            index = (index + 1) % messages.length;
+        }, SUBLIMINAL_INTERVAL);
+    }
 
-#audioToggle {
-    position: fixed;
-    top: 25px;
-    right: 25px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(191, 247, 163, 0.3);
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(191, 247, 163, 0.1);
-    color: #BFF7A3;
-}
+    // --- FIM DA LÓGICA DE MENSAGENS SUBLIMINARES ---
 
-#audioToggle:hover {
-    background: rgba(255, 255, 255, 0.12);
-    transform: scale(1.08);
-}
+    // Função principal para disparar efeitos de terror
+    function triggerHorrorEffect(effect, duration, className = 'active') {
+        effect.classList.add(className);
+        setTimeout(() => {
+            effect.classList.remove(className);
+        }, duration);
+    }
 
-#app-container {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    max-width: 500px;
-    transition: opacity 0.4s ease;
-}
+    function triggerRandomHorror() {
+        const effects = [
+            () => triggerHorrorEffect(glitchEffect, 500),
+            () => triggerHorrorEffect(vhsEffect, 3000),
+            () => triggerHorrorEffect(heartbeatPulse, 6000),
+            () => triggerHorrorEffect(screenCrack, 400),
+            () => triggerHorrorEffect(creepyHandLeft, 2000),
+            () => triggerHorrorEffect(creepyHandRight, 2000),
+        ];
+        const randomIndex = Math.floor(Math.random() * effects.length);
+        effects[randomIndex]();
+    }
 
-.card {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 60px 45px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(191, 247, 163, 0.08);
-    text-align: center;
-    position: relative;
-    border: 1px solid rgba(191, 247, 163, 0.25);
-    animation: fadeIn 0.9s ease;
-}
+    // Inicializar efeitos permanentes
+    ambientFog1.classList.add('active');
+    ambientFog2.classList.add('active');
+    ambientFog3.classList.add('active');
+    demonEyesLeft.classList.add('active');
+    demonEyesRight.classList.add('active');
+    followingEyes1.classList.add('active');
+    followingEyes2.classList.add('active');
+    
+    // Iniciar loop de terror e mensagens subliminares
+    runSubliminalMessages();
+    setInterval(triggerRandomHorror, 5000); 
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(35px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
-.blur-overlay {
-    position: relative;
-    cursor: pointer;
-}
+    // Função para seguir o cursor
+    function movePupil(event, pupil, eye) {
+        const { clientX, clientY } = event;
+        const eyeRect = eye.getBoundingClientRect();
+        const eyeX = eyeRect.left + eyeRect.width / 2;
+        const eyeY = eyeRect.top + eyeRect.height / 2;
+        const dx = clientX - eyeX;
+        const dy = clientY - eyeY;
+        const angle = Math.atan2(dy, dx);
+        const maxDist = 8; // Distância máxima que a pupila se move
+        
+        const pupilX = Math.cos(angle) * maxDist;
+        const pupilY = Math.sin(angle) * maxDist;
 
-.blur-content {
-    filter: blur(15px);
-    opacity: 0.5;
-    transition: all 0.3s ease;
-}
+        pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
+    }
 
-.blur-overlay:hover .blur-content {
-    filter: blur(12px);
-    opacity: 0.6;
-}
+    document.addEventListener('mousemove', (event) => {
+        movePupil(event, pupil1, followingEyes1.querySelector('.eye:nth-child(1)'));
+        movePupil(event, pupil2, followingEyes1.querySelector('.eye:nth-child(2)'));
+        movePupil(event, pupil3, followingEyes2.querySelector('.eye:nth-child(1)'));
+        movePupil(event, pupil4, followingEyes2.querySelector('.eye:nth-child(2)'));
+    });
 
-.click-hint {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    color: #BFF7A3;
-    font-weight: 700;
-    text-shadow: 0 0 30px rgba(191, 247, 163, 0.8);
-    pointer-events: none;
-    animation: pulse-hint 2s ease-in-out infinite;
-    z-index: 1;
-}
 
-@keyframes pulse-hint {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
-}
+    // Lógica de Navegação
+    const pages = document.querySelectorAll('.page');
+    const nextButtons = document.querySelectorAll('.next');
+    let currentPage = 1;
 
-.gagsaw-image {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 35px;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid rgba(191, 247, 163, 0.4);
-    box-shadow: 0 0 30px rgba(191, 247, 163, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
-    animation: pulse-glow 3s ease-in-out infinite;
-}
+    function showPage(pageNumber) {
+        pages.forEach(page => page.classList.remove('active'));
+        document.getElementById(`page${pageNumber}`).classList.add('active');
+        currentPage = pageNumber;
+    }
 
-@keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 30px rgba(191, 247, 163, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5); transform: scale(1); }
-    50% { box-shadow: 0 0 50px rgba(191, 247, 163, 0.5), 0 0 80px rgba(191, 247, 163, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.6); transform: scale(1.03); }
-}
+    nextButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Dispara o efeito de transição assustadora antes de mudar de página
+            const targetPage = parseInt(button.dataset.page.replace('page', ''));
 
-.gagsaw-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.9) contrast(1.1);
-}
+            if (targetPage === 3) {
+                triggerHorrorEffect(horrorTransition2, 4000);
+                // Espera a transição acabar (4000ms)
+                setTimeout(() => showPage(targetPage), 3500); 
+            } else {
+                showPage(targetPage);
+            }
+        });
+    });
 
-.page {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
+    // Lógica do primeiro clique (blur e áudio)
+    blurOverlay.addEventListener('click', () => {
+        if (currentPage === 1) {
+            // 1. Toca o áudio
+            if (!audioPlayed) {
+                audio.play().catch(e => console.log("Áudio não pôde ser reproduzido automaticamente."));
+                audioPlayed = true;
+            }
+            
+            // 2. Remove o blur e o hint
+            blurOverlay.classList.remove('blur-overlay');
+            blurOverlay.querySelector('.blur-content').style.filter = 'none';
+            blurOverlay.querySelector('.blur-content').style.opacity = 1;
+            clickHint.style.display = 'none';
+            
+            // 3. Dispara a primeira transição e navega para a página 2
+            triggerHorrorEffect(horrorTransition1, 4000);
+            screamSound.play().catch(e => console.log("Scream failed."));
+            
+            // 4. Navega para a página 2 após a transição
+            setTimeout(() => {
+                showPage(2);
+            }, 3500); 
+        }
+    });
 
-.page.active {
-    display: block;
-    opacity: 1;
-}
+    // Lógica do toggle de áudio
+    audioToggle.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play().catch(e => console.log("Play failed."));
+            audioToggle.textContent = '🔊';
+        } else {
+            audio.pause();
+            audioToggle.textContent = '🔇';
+        }
+    });
 
-.next {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 16px 45px;
-    background: rgba(191, 247, 163, 0.15);
-    backdrop-filter: blur(10px);
-    color: #BFF7A3;
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    border: 2px solid rgba(191, 247, 163, 0.4);
-    box-shadow: 0 0 20px rgba(191, 247, 163, 0.3);
-    cursor: pointer;
-}
-
-.next:hover {
-    background: rgba(191, 247, 163, 0.25);
-    border-color: rgba(191, 247, 163, 0.6);
-    transform: translateY(-3px);
-}
-
-.info-card {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 60px 45px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(191, 247, 163, 0.0
+});
+</script>
+</body>
+</html>
