@@ -133,7 +133,7 @@ body::before {
     50% { opacity: 1; }
 }
 
-/* Sombra de figura humana (manter a classe, mas pode ser melhorada se necessário) */
+/* Sombra de figura humana */
 .shadow-figure {
     position: fixed;
     bottom: -100%;
@@ -423,7 +423,7 @@ body::before {
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(191, 247, 163, 0.08);
     border: 1px solid rgba(191, 247, 163, 0.25);
     text-align: center;
-    animation: fadeIn 0.9s ease; /* Removendo o jumpBox para ficar mais limpo */
+    animation: fadeIn 0.9s ease;
     font-size: 1.8rem;
     color: #e8f8e0;
     line-height: 1.8;
@@ -474,17 +474,6 @@ body::before {
     position: relative;
     z-index: 2;
 }
-
-/* Efeitos adicionais (mantidos do código anterior para compatibilidade) */
-.glitch-effect, .vhs-effect {
-    position: fixed;
-    inset: 0;
-    z-index: 9997;
-    pointer-events: none;
-    display: none;
-}
-.glitch-effect.active { animation: none; display: block; opacity: 0; }
-.vhs-effect.active { animation: none; display: block; opacity: 0; }
 
 
 @media (max-width: 600px) {
@@ -595,7 +584,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const shadowFigure = document.getElementById('shadowFigure'); 
     
     // Duração aumentada da mensagem subliminar (em milissegundos)
-    const SUBLIMINAL_DURATION = 1500; 
+    const SUBLIMINAL_DURATION = 1500; // 1.5 segundos
+
+    // Constante do tempo de início da música
+    const AUDIO_START_TIME = 27;
 
     let isAudioPlaying = false;
     let currentPage = 'page1';
@@ -611,22 +603,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Duração da mensagem subliminar ATUALIZADA
+    // Duração da mensagem subliminar ATUALIZADA (1.5s)
     function triggerSubliminal(message) { 
         subliminalMsg.textContent = message;
         setActive(subliminalMsg, SUBLIMINAL_DURATION);
     }
     
-    // Inicia o áudio de fundo (Chamado no primeiro clique)
+    // Inicia o áudio de fundo (Chamado no primeiro clique) E CONFIGURA O TEMPO
     function playAudioSafe() {
         if (!isAudioPlaying) {
-            // Tenta tocar o áudio
+            // Tenta definir o tempo antes de tocar (pode ser bloqueado)
+            audio.currentTime = AUDIO_START_TIME;
+            
             audio.play().then(() => {
                 isAudioPlaying = true;
                 audioToggle.textContent = '🔊';
             }).catch(error => {
-                console.warn("Falha ao iniciar o áudio de fundo (interação necessária).", error);
-                // Se falhar, o áudio Toggle ainda pode ser usado.
+                console.warn("Falha ao iniciar o áudio de fundo com tempo específico (interação necessária).", error);
                 isAudioPlaying = false; 
                 audioToggle.textContent = '🔇';
             });
@@ -643,16 +636,14 @@ document.addEventListener('DOMContentLoaded', () => {
         screenDarken.classList.add('active');
         appContainer.style.opacity = '0';
         
-        // 3. Ativa o Jumpscare
-        // Ele vai aparecer com o efeito shake do CSS
+        // 3. Ativa o Jumpscare (Efeito de tremor está no CSS #jumpscare-image-container)
         finalJumpscare.classList.add('active');
 
-        // 4. Jumpscare subliminar curto no momento do susto
+        // 4. Jumpscare subliminar final
         triggerSubliminal("SAW"); 
 
         // 5. Toca o grito
         screamSound.currentTime = 0; 
-        // O grito está em data URI, deve funcionar, mas pode ser lento.
         screamSound.play().catch(e => console.error("Erro ao tocar GRITO:", e));
     }
 
@@ -665,7 +656,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Garante que o áudio seja iniciado antes da transição (após o clique inicial)
         playAudioSafe();
 
         // Escurece e troca a página
@@ -678,17 +668,15 @@ document.addEventListener('DOMContentLoaded', () => {
             targetPage.classList.add('active');
             currentPage = targetPageId;
             
-            // Retorna o container para 100% de opacidade
             appContainer.style.opacity = '1';
             
-            // Limpa a escuridão
             screenDarken.classList.remove('active');
             
-            // Efeitos específicos da página
+            // Frases subliminares corrigidas
             if (targetPageId === 'page2') {
-                triggerSubliminal("OLHA");
+                triggerSubliminal("RUN"); // Ou outra frase original
             } else if (targetPageId === 'page3') {
-                triggerSubliminal("AGORA");
+                triggerSubliminal("AGORA"); // Ou outra frase original
             }
             
         }, 500); // Tempo para a transição
@@ -708,9 +696,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.blur-content').style.opacity = '1';
             
             // 2. Escurece a tela para o susto leve e transiciona
-            setActive(screenDarken, 1800); // Escurece por 1.8s
+            setActive(screenDarken, 1800); 
             triggerSubliminal("RUN"); 
-            setActive(shadowFigure, 3000); // Sombra aparece/anda
+            setActive(shadowFigure, 3000); 
 
             // 3. Transição para Page 2 após o susto leve
             setTimeout(() => {
@@ -736,6 +724,8 @@ document.addEventListener('DOMContentLoaded', () => {
             isAudioPlaying = false;
             audioToggle.textContent = '🔇';
         } else {
+            // Tenta tocar definindo o tempo novamente (se o primeiro playSafe falhou)
+            audio.currentTime = AUDIO_START_TIME;
             audio.play().then(() => {
                 isAudioPlaying = true;
                 audioToggle.textContent = '🔊';
