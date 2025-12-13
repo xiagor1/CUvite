@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (firstInteraction) {
             // No mobile, só podemos mudar o tempo DEPOIS que o usuário interagiu
             // e DENTRO do evento de interação
-            audio.currentTime = >27; 
+            audio.currentTime = 0,27; 
             
             audio.play().then(() => {
                 audioToggle.textContent = '🔊';
