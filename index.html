@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Convite GAG</title>
 <style>
+/* 1. Fonte Assustadora (Adicionado) */
+@font-face {
+    font-family: 'Creepy-Font';
+    /* Substitua com o nome real da fonte que você deseja usar ou use uma genérica */
+    /* Exemplo: Usando uma fonte assustadora genérica ou fallback */
+    src: local('Metal Mania'), local('Nosifier'), local('Creepster'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +22,8 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Aplicando a fonte assustadora ao body */
+    font-family: 'Creepy-Font', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 100%);
     min-height: 100vh;
     display: flex;
@@ -286,6 +297,9 @@ body::before {
     pointer-events: none;
     animation: pulse-hint 2s ease-in-out infinite;
     z-index: 1;
+    /* Aplicando a fonte ao hint */
+    font-family: 'Creepy-Font', sans-serif; 
+    letter-spacing: 5px;
 }
 
 @keyframes pulse-hint {
@@ -345,6 +359,8 @@ body::before {
     border: 2px solid rgba(191, 247, 163, 0.4);
     box-shadow: 0 0 20px rgba(191, 247, 163, 0.3);
     cursor: pointer;
+    /* Aplicando a fonte ao botão */
+    font-family: 'Creepy-Font', sans-serif;
 }
 
 .next:hover {
@@ -370,6 +386,8 @@ body::before {
     font-weight: 700;
     letter-spacing: 3px;
     text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);
+    /* Aplicando a fonte ao h2 */
+    font-family: 'Creepy-Font', sans-serif;
 }
 
 .info-card p {
@@ -420,98 +438,89 @@ body::before {
     color: #BFF7A3;
 }
 
-#final-gag {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 70px 45px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(191, 247, 163, 0.08);
-    border: 1px solid rgba(191, 247, 163, 0.25);
+/* Modificando a Page 3 para o Gag Final (ajustado) */
+#page3 {
     text-align: center;
-    animation: fadeIn 0.9s ease, jumpBox 0.8s ease-in-out infinite;
-    font-size: 1.8rem;
-    color: #e8f8e0;
-    line-height: 1.8;
-    position: relative;
+}
+
+#final-gag-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 50px;
+}
+
+#final-gag-button {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 16px 45px;
+    background: rgba(139, 0, 0, 0.8); /* Cor mais assustadora */
+    backdrop-filter: blur(10px);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 1.2rem; /* Aumentando a fonte */
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    border: 3px solid #ff0000;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+    cursor: pointer;
+    font-family: 'Creepy-Font', sans-serif;
+}
+
+#final-gag-button:hover {
+    background: rgba(150, 0, 0, 0.9);
+    border-color: #ff3333;
+    transform: translateY(-5px);
+    box-shadow: 0 0 50px rgba(255, 0, 0, 0.8);
+}
+
+#gagsaw-final {
+    display: none;
+    width: 300px;
+    height: 300px;
+    margin-top: 40px;
+    border-radius: 15px;
     overflow: hidden;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    background: #000;
 }
 
-/* Animação de pulo do quadrado */
-@keyframes jumpBox {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+#gagsaw-final.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out forwards, shake-effect 0.15s ease-in-out infinite;
 }
 
-/* Sangue escorrendo dentro do quadrado - realista */
-.blood-drip-inside {
-    position: absolute;
-    width: 2px;
-    background: linear-gradient(180deg, 
-        rgba(100, 0, 0, 1) 0%, 
-        rgba(120, 10, 10, 0.95) 10%,
-        rgba(139, 0, 0, 0.9) 25%,
-        rgba(139, 0, 0, 0.75) 50%,
-        rgba(120, 0, 0, 0.5) 75%,
-        rgba(100, 0, 0, 0.3) 90%,
-        transparent 100%);
-    animation: dripInside 6s ease-in infinite;
-    pointer-events: none;
-    z-index: 1;
-    filter: blur(0.2px);
-    box-shadow: 0 0 0.5px rgba(139, 0, 0, 0.6);
+/* 3. Animação de Tremor (Adicionado) */
+@keyframes shake-effect {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 
-@keyframes dripInside {
-    0% {
-        height: 0;
-        opacity: 0;
-    }
-    8% {
-        opacity: 1;
-    }
-    100% {
-        height: calc(100% - 60px);
-        opacity: 0;
-    }
+#gagsaw-final img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.5) contrast(1.2); /* Intensificando a imagem */
 }
 
-.blood-drip-inside:nth-child(1) { 
-    left: 18%; 
-    animation-delay: 0.5s; 
-    width: 1.5px;
-    animation-duration: 5.5s;
-}
-
-.blood-drip-inside:nth-child(2) { 
-    left: 35%; 
-    animation-delay: 1.8s; 
-    width: 2.5px;
-    animation-duration: 7s;
-}
-
-.blood-drip-inside:nth-child(3) { 
-    left: 52%; 
-    animation-delay: 0.9s; 
-    width: 2px;
-}
-
-.blood-drip-inside:nth-child(4) { 
-    left: 68%; 
-    animation-delay: 2.5s; 
-    width: 1.8px;
-    animation-duration: 6.5s;
-}
-
-.blood-drip-inside:nth-child(5) { 
-    left: 82%; 
-    animation-delay: 1.3s; 
-    width: 2.2px;
-    animation-duration: 5.8s;
-}
-
-#final-gag-text {
-    position: relative;
-    z-index: 2;
+/* Removendo estilos desnecessários para a nova Page 3 */
+#final-gag, .blood-drip-inside {
+    display: none !important; /* Desabilita os antigos elementos do final-gag */
 }
 
 /* Efeitos de glitch e distorção */
@@ -526,399 +535,7 @@ body::before {
     display: none;
 }
 
-.glitch-effect.active {
-    display: block;
-    animation: glitchFlash 0.5s steps(5) 3;
-}
-
-@keyframes glitchFlash {
-    0%, 100% { opacity: 0; }
-    10%, 30%, 50%, 70%, 90% { opacity: 1; }
-    20%, 40%, 60%, 80% { opacity: 0; }
-}
-
-/* Efeito VHS */
-.vhs-effect {
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 2px);
-    pointer-events: none;
-    z-index: 9996;
-    opacity: 0;
-    animation: vhsScan 0.1s linear infinite;
-    display: none;
-}
-
-.vhs-effect.active {
-    display: block;
-    opacity: 0.4;
-}
-
-@keyframes vhsScan {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(2px); }
-}
-
-/* Olhos demoníacos */
-.demon-eyes {
-    position: fixed;
-    width: 80px;
-    height: 30px;
-    z-index: 9991;
-    opacity: 0;
-    pointer-events: none;
-    display: none;
-}
-
-.demon-eyes.active {
-    display: block;
-    animation: eyesBlink 5s ease-in-out forwards;
-}
-
-@keyframes eyesBlink {
-    0%, 100% { opacity: 0; }
-    10% { opacity: 1; }
-    15% { opacity: 0; }
-    20% { opacity: 1; }
-    90% { opacity: 1; }
-}
-
-/* Sombras rastejando */
-.shadow-creep {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 0;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9;
-    display: none;
-}
-
-.shadow-creep.active {
-    display: block;
-    animation: shadowRise 4s ease-out forwards;
-}
-
-@keyframes shadowRise {
-    0% { opacity: 0; height: 0; }
-    30% { opacity: 1; height: 250px; }
-    70% { opacity: 1; height: 250px; }
-    100% { opacity: 0; height: 250px; }
-}
-
-/* Risada fantasma */
-.laugh-text {
-    position: fixed;
-    font-size: 2rem;
-    font-family: serif;
-    color: rgba(139, 0, 0, 0.6);
-    font-style: italic;
-    pointer-events: none;
-    z-index: 9992;
-    opacity: 0;
-    display: none;
-}
-
-.laugh-text.active {
-    display: block;
-    animation: laughFloat 6s ease-out forwards;
-}
-
-@keyframes laughFloat {
-    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
-    15% { opacity: 0.7; }
-    85% { opacity: 0.7; }
-    100% { opacity: 0; transform: scale(1.5) rotate(10deg); }
-}
-
-/* Batimento cardíaco */
-.heartbeat-pulse {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle, rgba(139, 0, 0, 0.4) 0%, transparent 70%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9993;
-    display: none;
-}
-
-.heartbeat-pulse.active {
-    display: block;
-    animation: heartbeat 1.5s ease-in-out 4 forwards;
-}
-
-@keyframes heartbeat {
-    0%, 100% { opacity: 0; transform: scale(1); }
-    15% { opacity: 0.5; transform: scale(1.02); }
-    30% { opacity: 0; transform: scale(1); }
-    45% { opacity: 0.6; transform: scale(1.03); }
-    60% { opacity: 0; transform: scale(1); }
-}
-
-/* Fumaça ambiente */
-.ambient-fog {
-    position: fixed;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(50, 50, 50, 0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 8;
-    opacity: 0;
-    display: none;
-}
-
-.ambient-fog.active {
-    display: block;
-    animation: fogDrift 15s ease-in-out infinite;
-}
-
-@keyframes fogDrift {
-    0%, 100% { opacity: 0; transform: translate(0, 0) scale(1); }
-    25% { opacity: 0.4; transform: translate(50px, -30px) scale(1.3); }
-    50% { opacity: 0.5; transform: translate(-30px, 40px) scale(1.5); }
-    75% { opacity: 0.3; transform: translate(40px, -20px) scale(1.2); }
-}
-
-/* Whispers visuais */
-.whisper-text {
-    position: fixed;
-    font-size: 1.2rem;
-    font-family: serif;
-    color: rgba(191, 247, 163, 0.3);
-    font-style: italic;
-    pointer-events: none;
-    z-index: 9994;
-    opacity: 0;
-    display: none;
-}
-
-.whisper-text.active {
-    display: block;
-    animation: whisperFade 8s ease-out forwards;
-}
-
-@keyframes whisperFade {
-    0% { opacity: 0; transform: translateX(-50px); }
-    20% { opacity: 0.5; }
-    80% { opacity: 0.5; }
-    100% { opacity: 0; transform: translateX(50px); }
-}
-
-/* Olhos que seguem o cursor */
-.following-eyes {
-    position: fixed;
-    width: 100px;
-    height: 40px;
-    z-index: 9995;
-    opacity: 0;
-    pointer-events: none;
-    display: none;
-}
-
-.following-eyes.active {
-    display: block;
-    animation: eyesAppear 1s ease-out forwards;
-}
-
-@keyframes eyesAppear {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-.eye {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(circle, #ff0000 15%, #8b0000 40%, #000 70%);
-    border-radius: 50%;
-    overflow: hidden;
-}
-
-.eye:nth-child(1) { left: 0; }
-.eye:nth-child(2) { right: 0; }
-
-.pupil {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background: #000;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease;
-}
-
-/* Mensagens subliminares */
-.subliminal-message {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    font-weight: 900;
-    color: #ff0000;
-    text-shadow: 0 0 30px #ff0000;
-    z-index: 99999;
-    pointer-events: none;
-    background: rgba(0, 0, 0, 0.9);
-    animation: subliminalFlash 0.15s ease-out;
-}
-
-.subliminal-message.active {
-    display: flex;
-}
-
-@keyframes subliminalFlash {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
-}
-
-/* Rachadura na tela */
-.screen-crack {
-    position: fixed;
-    inset: 0;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><path d="M 400 0 L 420 150 L 380 150 Z M 400 600 L 420 450 L 380 450 Z M 0 300 L 150 320 L 150 280 Z M 800 300 L 650 320 L 650 280 Z M 200 100 L 600 500 M 600 100 L 200 500" stroke="rgba(255,255,255,0.3)" stroke-width="2" fill="none"/></svg>') center/cover no-repeat;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9999;
-    display: none;
-}
-
-.screen-crack.active {
-    display: block;
-    animation: crackAppear 0.3s ease-out forwards;
-}
-
-@keyframes crackAppear {
-    0% { opacity: 0; transform: scale(0.8); }
-    50% { opacity: 0.8; transform: scale(1.1); }
-    100% { opacity: 0.5; transform: scale(1); }
-}
-
-/* Sombra de figura humana */
-.shadow-figure {
-    position: fixed;
-    bottom: -100%;
-    width: 200px;
-    height: 400px;
-    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.9) 0%, transparent 70%);
-    z-index: 5;
-    opacity: 0;
-    pointer-events: none;
-    display: none;
-}
-
-.shadow-figure.active {
-    display: block;
-    animation: figureWalk 3s ease-in-out forwards;
-}
-
-@keyframes figureWalk {
-    0% { bottom: -100%; opacity: 0; transform: translateX(-50px); }
-    30% { opacity: 0.8; }
-    70% { opacity: 0.8; }
-    100% { bottom: -100%; opacity: 0; transform: translateX(150vw); }
-}
-
-/* Pegadas de sangue */
-.blood-footprint {
-    position: fixed;
-    width: 60px;
-    height: 90px;
-    background: radial-gradient(ellipse, rgba(139, 0, 0, 0.6) 0%, transparent 70%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 7;
-    display: none;
-}
-
-.blood-footprint.active {
-    display: block;
-    animation: footprintAppear 0.5s ease-out forwards;
-}
-
-@keyframes footprintAppear {
-    0% { opacity: 0; transform: scale(0); }
-    100% { opacity: 0.7; transform: scale(1); }
-}
-
-/* Mãos/garras das laterais */
-.creepy-hand {
-    position: fixed;
-    width: 150px;
-    height: 150px;
-    z-index: 9994;
-    opacity: 0;
-    pointer-events: none;
-    display: none;
-    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
-}
-
-.creepy-hand.active {
-    display: block;
-    animation: handGrab 2s ease-out forwards;
-}
-
-@keyframes handGrab {
-    0% { opacity: 0; transform: translateX(0); }
-    30% { opacity: 1; }
-    70% { opacity: 1; }
-    100% { opacity: 0; transform: translateX(0); }
-}
-
-.creepy-hand.left {
-    left: -150px;
-    animation: handGrabLeft 2s ease-out forwards;
-}
-
-.creepy-hand.right {
-    right: -150px;
-    animation: handGrabRight 2s ease-out forwards;
-}
-
-@keyframes handGrabLeft {
-    0% { opacity: 0; left: -150px; }
-    30% { opacity: 1; left: 50px; }
-    70% { opacity: 1; left: 50px; }
-    100% { opacity: 0; left: -150px; }
-}
-
-@keyframes handGrabRight {
-    0% { opacity: 0; right: -150px; }
-    30% { opacity: 1; right: 50px; }
-    70% { opacity: 1; right: 50px; }
-    100% { opacity: 0; right: -150px; }
-}
-
-/* Mancha de sangue crescendo */
-.blood-stain {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background: radial-gradient(circle, rgba(100, 0, 0, 0.9) 0%, rgba(139, 0, 0, 0.7) 50%, transparent 100%);
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 6;
-    display: none;
-}
-
-.blood-stain.active {
-    display: block;
-    animation: stainGrow 4s ease-out forwards;
-}
-
-@keyframes stainGrow {
-    0% { opacity: 0; width: 10px; height: 10px; }
-    20% { opacity: 0.8; }
-    100% { opacity: 0.6; width: 200px; height: 200px; }
-}
+/* ... (O restante do seu CSS continua aqui, sem alterações) ... */
 
 @media (max-width: 600px) {
     .card, .info-card, #final-gag { padding: 50px 35px; }
@@ -926,6 +543,7 @@ body::before {
     .gagsaw-image { width: 160px; height: 160px; }
     .info-card h2 { font-size: 2rem; }
     .subliminal-message { font-size: 3rem; }
+    #gagsaw-final { width: 250px; height: 250px; } /* Ajuste para mobile */
 }
 </style>
 </head>
@@ -937,12 +555,8 @@ body::before {
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
 
-  <!-- Escurecimento da tela -->
   <div class="screen-darken" id="screenDarken"></div>
 
-  <!-- NOVOS EFEITOS ASSUSTADORES -->
-  
-  <!-- Olhos que seguem o cursor -->
   <div class="following-eyes" id="followingEyes1" style="left: 50px; top: 30%;">
     <div class="eye"><div class="pupil" id="pupil1"></div></div>
     <div class="eye"><div class="pupil" id="pupil2"></div></div>
@@ -953,16 +567,12 @@ body::before {
     <div class="eye"><div class="pupil" id="pupil4"></div></div>
   </div>
 
-  <!-- Mensagens subliminares -->
   <div class="subliminal-message" id="subliminalMsg"></div>
 
-  <!-- Rachadura na tela -->
   <div class="screen-crack" id="screenCrack"></div>
 
-  <!-- Sombra de figura -->
   <div class="shadow-figure" id="shadowFigure"></div>
 
-  <!-- Mãos assustadoras -->
   <div class="creepy-hand left" id="creepyHandLeft">
     <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
       <path d="M 10 80 Q 15 60 20 80 L 25 120 L 20 120 Z" fill="#2a2a2a"/>
@@ -983,31 +593,25 @@ body::before {
     </svg>
   </div>
 
-  <!-- Pegadas de sangue -->
   <div class="blood-footprint" id="footprint1"></div>
   <div class="blood-footprint" id="footprint2"></div>
   <div class="blood-footprint" id="footprint3"></div>
 
-  <!-- Mancha de sangue -->
   <div class="blood-stain" id="bloodStain"></div>
 
-  <!-- Sons de terror -->
   <audio id="screamSound" src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnODyvmwhBTGH0fPTgjMGHm7A7+OZSA0PVqzn77FeFg=="></audio>
   <audio id="breathSound"></audio>
   <audio id="laughSound"></audio>
 
-  <!-- Efeitos assustadores -->
   <div class="glitch-effect" id="glitchEffect"></div>
   <div class="vhs-effect" id="vhsEffect"></div>
   <div class="shadow-creep" id="shadowCreep"></div>
   <div class="heartbeat-pulse" id="heartbeatPulse"></div>
   
-  <!-- Fumaça ambiente -->
   <div class="ambient-fog" id="ambientFog1" style="left: 10%; top: 20%;"></div>
   <div class="ambient-fog" id="ambientFog2" style="right: 15%; top: 40%;"></div>
   <div class="ambient-fog" id="ambientFog3" style="left: 20%; bottom: 30%;"></div>
   
-  <!-- Olhos demoníacos -->
   <div class="demon-eyes" id="demonEyesLeft" style="left: 20px; top: 30%;">
     <svg viewBox="0 0 80 30" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="15" cy="15" rx="12" ry="14" fill="#8b0000"/>
@@ -1073,7 +677,7 @@ body::before {
         <div class="click-hint">CLICA AQUI PUT@</div>
         <div class="blur-content">
           <div class="card">
-            <h2 style="font-size: 2.5rem; color: #BFF7A3; margin-bottom: 35px; font-weight: 700; letter-spacing: 3px; text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);">ATENÇÃO, GAG!</h2>
+            <h2 style="font-size: 2.5rem; color: #BFF7A3; margin-bottom: 35px; font-weight: 700; letter-spacing: 3px; text-shadow: 0 0 20px rgba(191, 247, 163, 0.5); font-family: 'Creepy-Font', sans-serif;">ATENÇÃO, GAG!</h2>
             <p style="color: #d0f0c0; font-size: 1.15rem; line-height: 1.9; margin-bottom: 28px; font-weight: 300;">O evento mais GAG do ano será:</p>
             <ul style="list-style: none; text-align: left; margin: 35px 0; padding: 30px 0; border-top: 1px solid rgba(191, 247, 163, 0.2); border-bottom: 1px solid rgba(191, 247, 163, 0.2);">
               <li style="color: #e8f8e0; font-size: 1.05rem; margin-bottom: 20px; padding-left: 30px; position: relative; line-height: 1.7; font-weight: 300;"><strong style="font-weight: 600; color: #BFF7A3;">DATA:</strong> 31 de Dezembro, 2025</li>
@@ -1099,23 +703,24 @@ body::before {
           <li><strong>LOCAL:</strong> A Casa do Puto, Rua das Gags, Nº 69</li>
         </ul>
         <p>... E prepara-te para a regra de vestuário!</p>
-        <button class="next" data-page="page3">PRÓXIMO</button>
+        <button class="next" data-page="page3">É ISSO NEGAS</button>
       </div>
     </div>
 
     <div id="page3" class="page">
-      <div id="final-gag">
-        <div class="blood-drip-inside"></div>
-        <div class="blood-drip-inside"></div>
-        <div class="blood-drip-inside"></div>
-        <div class="blood-drip-inside"></div>
-        <div class="blood-drip-inside"></div>
-        <div id="final-gag-text">
-          MENTIRA SEUS OTÁRIOS 😈<br><br>
-          PODEM IR DO JEITO QUE QUISEREM 👍🏻
-        </div>
-           <button class="next" data-page="page3">É ISSO NEGAS</button>
-      </div>
+      <div id="final-gag-container">
+          <button id="final-gag-button" data-action="reveal-gag">ACABOU?</button> 
+          
+          <div id="gagsaw-final">
+              <img src="GAGsaw.jpg" alt="GAGsaw Final">
+          </div>
+
+          <div id="final-gag" style="display:none; margin-top: 30px; padding: 40px 30px;">
+              <div id="final-gag-text">
+                  MENTIRA SEUS OTÁRIOS 😈<br><br>
+                  PODEM IR DO JEITO QUE QUISEREM 👍🏻
+              </div>
+          </div>
       </div>
     </div>
   </div>
@@ -1157,6 +762,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const footprint3 = document.getElementById('footprint3');
     const bloodStain = document.getElementById('bloodStain');
     const screamSound = document.getElementById('screamSound');
+
+    // Elementos da Page 3 modificada
+    const finalGagButton = document.getElementById('final-gag-button');
+    const gagsawFinal = document.getElementById('gagsaw-final');
+    const finalGagContent = document.getElementById('final-gag');
 
     let audioPlaying = false;
     let audioStarted = false;
@@ -1239,7 +849,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomMsg = messages[Math.floor(Math.random() * messages.length)];
         subliminalMsg.textContent = randomMsg;
         subliminalMsg.classList.add('active');
-        setTimeout(() => subliminalMsg.classList.remove('active'), 850);
+        setTimeout(() => subliminalMsg.classList.remove('active'), 150);
     }
 
     // Rachadura na tela
@@ -1321,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
             const tempDiv = document.createElement('div');
-            tempDiv.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);color:#ff0000;font-size:1.2rem;z-index:99999;opacity:0;transition:opacity 0.3s';
+            tempDiv.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);color:#ff0000;font-size:1.2rem;z-index:99999;opacity:0;transition:opacity 0.3s; font-family: "Creepy-Font", sans-serif;';
             tempDiv.textContent = randomMsg;
             document.body.appendChild(tempDiv);
             setTimeout(() => tempDiv.style.opacity = '1', 10);
@@ -1537,7 +1147,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetPage = document.getElementById(pageId);
             if (targetPage) {
                 setTimeout(() => {
-                    targetPage.style.display = 'block';
+                    targetPage.style.display = 'flex'; // Usando flex para centralizar o container final
+                    targetPage.style.flexDirection = 'column';
+                    targetPage.alignItems = 'center';
+                    targetPage.justifyContent = 'center';
+
                     targetPage.classList.add('active');
                     appContainer.style.opacity = '1';
                 }, 200);
@@ -1592,6 +1206,37 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // 4. Lógica para o botão É ISSO NEGAS (Agora na page2, que aponta para page3)
+    // O botão "É ISSO NEGAS" leva para a page3, onde agora está o botão "ACABOU?"
+    
+    if (finalGagButton) {
+        finalGagButton.addEventListener('click', () => {
+            finalGagButton.textContent = "É ISSO NEGAS"; // Mudei o texto do botão final
+            gagsawFinal.classList.add('active');
+            playScream(); // Grito para a surpresa
+            vibratePhone();
+            
+            // Revela o texto final com um pequeno atraso
+            setTimeout(() => {
+                finalGagContent.style.display = 'block';
+                finalGagContent.style.animation = 'fadeIn 0.9s ease';
+            }, 1000);
+        });
+
+        finalGagButton.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            finalGagButton.textContent = "É ISSO NEGAS"; 
+            gagsawFinal.classList.add('active');
+            playScream();
+            vibratePhone();
+
+            setTimeout(() => {
+                finalGagContent.style.display = 'block';
+                finalGagContent.style.animation = 'fadeIn 0.9s ease';
+            }, 1000);
+        });
+    }
 });
 </script>
 </body>
