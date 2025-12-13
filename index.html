@@ -20,7 +20,8 @@ body {
     justify-content: center;
     padding: 20px;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body::before {
@@ -41,27 +42,102 @@ body::before {
     50% { transform: translate(30px, 30px) scale(1.1); }
 }
 
+/* Sangue realista escorrendo */
 .blood-drip {
     position: fixed;
-    width: 3px;
-    background: linear-gradient(180deg, rgba(139, 0, 0, 0.8) 0%, rgba(139, 0, 0, 0) 100%);
-    animation: drip 3s ease-in infinite;
+    width: 2px;
+    background: linear-gradient(180deg, 
+        rgba(100, 0, 0, 1) 0%, 
+        rgba(120, 10, 10, 0.95) 15%,
+        rgba(139, 0, 0, 0.9) 30%,
+        rgba(139, 0, 0, 0.7) 60%,
+        rgba(100, 0, 0, 0.4) 85%,
+        transparent 100%);
+    animation: drip 5s ease-in infinite;
     pointer-events: none;
     z-index: 999;
-    border-radius: 0 0 50% 50%;
+    filter: blur(0.3px);
+    box-shadow: 0 0 1px rgba(139, 0, 0, 0.8);
 }
 
 @keyframes drip {
-    0% { height: 0; opacity: 0; }
-    10% { opacity: 1; }
-    100% { height: 80vh; opacity: 0; }
+    0% { 
+        height: 0; 
+        opacity: 0;
+        filter: blur(0px);
+    }
+    5% { 
+        opacity: 1;
+        filter: blur(0.2px);
+    }
+    15% {
+        filter: blur(0.3px);
+    }
+    100% { 
+        height: 85vh; 
+        opacity: 0;
+        filter: blur(0.5px);
+    }
 }
 
-.blood-drip:nth-child(1) { left: 15%; animation-delay: 0.5s; }
-.blood-drip:nth-child(2) { left: 35%; animation-delay: 1.2s; width: 4px; }
-.blood-drip:nth-child(3) { left: 58%; animation-delay: 0.8s; }
-.blood-drip:nth-child(4) { left: 72%; animation-delay: 1.5s; width: 5px; }
-.blood-drip:nth-child(5) { left: 88%; animation-delay: 0.3s; }
+.blood-drip:nth-child(1) { 
+    left: 12%; 
+    animation-delay: 0.3s; 
+    width: 1.5px;
+    background: linear-gradient(180deg, 
+        rgba(90, 0, 0, 1) 0%, 
+        rgba(110, 5, 5, 0.95) 15%,
+        rgba(130, 0, 0, 0.85) 35%,
+        rgba(120, 0, 0, 0.6) 65%,
+        transparent 100%);
+}
+
+.blood-drip:nth-child(2) { 
+    left: 28%; 
+    animation-delay: 1.8s; 
+    width: 3px;
+    animation-duration: 6s;
+}
+
+.blood-drip:nth-child(3) { 
+    left: 47%; 
+    animation-delay: 0.9s; 
+    width: 2.5px;
+    animation-duration: 5.5s;
+}
+
+.blood-drip:nth-child(4) { 
+    left: 68%; 
+    animation-delay: 2.3s; 
+    width: 2px;
+}
+
+.blood-drip:nth-child(5) { 
+    left: 84%; 
+    animation-delay: 1.2s; 
+    width: 1.8px;
+    background: linear-gradient(180deg, 
+        rgba(95, 0, 0, 1) 0%, 
+        rgba(115, 8, 8, 0.93) 20%,
+        rgba(135, 0, 0, 0.8) 40%,
+        rgba(115, 0, 0, 0.5) 70%,
+        transparent 100%);
+}
+
+/* Escurecimento da tela ao clicar */
+.screen-darken {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: opacity 0.6s ease-out;
+}
+
+.screen-darken.active {
+    opacity: 0.85;
+}
 
 .screen-flash {
     position: fixed;
@@ -364,15 +440,23 @@ body::before {
     50% { transform: translateY(-15px); }
 }
 
-/* Sangue escorrendo dentro do quadrado */
+/* Sangue escorrendo dentro do quadrado - realista */
 .blood-drip-inside {
     position: absolute;
-    width: 4px;
-    background: linear-gradient(180deg, rgba(139, 0, 0, 1) 0%, rgba(139, 0, 0, 0) 100%);
-    animation: dripInside 4s ease-in infinite;
+    width: 2px;
+    background: linear-gradient(180deg, 
+        rgba(100, 0, 0, 1) 0%, 
+        rgba(120, 10, 10, 0.95) 10%,
+        rgba(139, 0, 0, 0.9) 25%,
+        rgba(139, 0, 0, 0.75) 50%,
+        rgba(120, 0, 0, 0.5) 75%,
+        rgba(100, 0, 0, 0.3) 90%,
+        transparent 100%);
+    animation: dripInside 6s ease-in infinite;
     pointer-events: none;
-    border-radius: 0 0 50% 50%;
     z-index: 1;
+    filter: blur(0.2px);
+    box-shadow: 0 0 0.5px rgba(139, 0, 0, 0.6);
 }
 
 @keyframes dripInside {
@@ -380,20 +464,48 @@ body::before {
         height: 0;
         opacity: 0;
     }
-    15% {
+    8% {
         opacity: 1;
     }
     100% {
-        height: calc(100% - 40px);
+        height: calc(100% - 60px);
         opacity: 0;
     }
 }
 
-.blood-drip-inside:nth-child(1) { left: 15%; animation-delay: 0s; width: 3px; }
-.blood-drip-inside:nth-child(2) { left: 30%; animation-delay: 0.8s; width: 5px; }
-.blood-drip-inside:nth-child(3) { left: 50%; animation-delay: 1.5s; width: 4px; }
-.blood-drip-inside:nth-child(4) { left: 70%; animation-delay: 0.5s; width: 3px; }
-.blood-drip-inside:nth-child(5) { left: 85%; animation-delay: 1.2s; width: 5px; }
+.blood-drip-inside:nth-child(1) { 
+    left: 18%; 
+    animation-delay: 0.5s; 
+    width: 1.5px;
+    animation-duration: 5.5s;
+}
+
+.blood-drip-inside:nth-child(2) { 
+    left: 35%; 
+    animation-delay: 1.8s; 
+    width: 2.5px;
+    animation-duration: 7s;
+}
+
+.blood-drip-inside:nth-child(3) { 
+    left: 52%; 
+    animation-delay: 0.9s; 
+    width: 2px;
+}
+
+.blood-drip-inside:nth-child(4) { 
+    left: 68%; 
+    animation-delay: 2.5s; 
+    width: 1.8px;
+    animation-duration: 6.5s;
+}
+
+.blood-drip-inside:nth-child(5) { 
+    left: 82%; 
+    animation-delay: 1.3s; 
+    width: 2.2px;
+    animation-duration: 5.8s;
+}
 
 #final-gag-text {
     position: relative;
@@ -610,6 +722,9 @@ body::before {
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
 
+  <!-- Escurecimento da tela -->
+  <div class="screen-darken" id="screenDarken"></div>
+
   <!-- Efeitos assustadores -->
   <div class="glitch-effect" id="glitchEffect"></div>
   <div class="vhs-effect" id="vhsEffect"></div>
@@ -686,15 +801,15 @@ body::before {
       <div class="blur-overlay" id="blurOverlay">
         <div class="click-hint">CLICA AQUI PUT@</div>
         <div class="blur-content">
-          <div class="info-card">
-            <h2>ATENÇÃO, GAG!</h2>
-            <p>O evento mais GAG do ano será:</p>
-            <ul>
-              <li><strong>DATA:</strong> 31 de Dezembro, 2025 (Fim de Ano)</li>
-              <li><strong>HORA:</strong> A partir das 22h00</li>
-              <li><strong>LOCAL:</strong> A Casa do Puto, Rua das Gags, Nº 69</li>
+          <div class="card">
+            <h2 style="font-size: 2.5rem; color: #BFF7A3; margin-bottom: 35px; font-weight: 700; letter-spacing: 3px; text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);">ATENÇÃO, GAG!</h2>
+            <p style="color: #d0f0c0; font-size: 1.15rem; line-height: 1.9; margin-bottom: 28px; font-weight: 300;">O evento mais GAG do ano será:</p>
+            <ul style="list-style: none; text-align: left; margin: 35px 0; padding: 30px 0; border-top: 1px solid rgba(191, 247, 163, 0.2); border-bottom: 1px solid rgba(191, 247, 163, 0.2);">
+              <li style="color: #e8f8e0; font-size: 1.05rem; margin-bottom: 20px; padding-left: 30px; position: relative; line-height: 1.7; font-weight: 300;"><strong style="font-weight: 600; color: #BFF7A3;">DATA:</strong> 31 de Dezembro, 2025</li>
+              <li style="color: #e8f8e0; font-size: 1.05rem; margin-bottom: 20px; padding-left: 30px; position: relative; line-height: 1.7; font-weight: 300;"><strong style="font-weight: 600; color: #BFF7A3;">HORA:</strong> A partir das 22h00</li>
+              <li style="color: #e8f8e0; font-size: 1.05rem; margin-bottom: 0; padding-left: 30px; position: relative; line-height: 1.7; font-weight: 300;"><strong style="font-weight: 600; color: #BFF7A3;">LOCAL:</strong> A Casa do Puto, Rua das Gags, Nº 69</li>
             </ul>
-            <p>... E prepara-te para a regra de vestuário!</p>
+            <p style="color: #d0f0c0; font-size: 1.15rem; line-height: 1.9; margin-bottom: 28px; font-weight: 300;">... E prepara-te para a regra de vestuário!</p>
           </div>
         </div>
       </div>
@@ -750,14 +865,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const ambientFog1 = document.getElementById('ambientFog1');
     const ambientFog2 = document.getElementById('ambientFog2');
     const ambientFog3 = document.getElementById('ambientFog3');
+    const screenDarken = document.getElementById('screenDarken');
 
     let audioPlaying = false;
+    let audioStarted = false;
     
     const playAudio = () => {
-        if (!audioPlaying) {
+        if (!audioPlaying && audio) {
+            // Garante que o tempo seja definido antes de tocar
             audio.currentTime = 27;
             audio.play().then(() => {
                 audioPlaying = true;
+                audioStarted = true;
+                audioToggle.textContent = '🔊';
+            }).catch((error) => {
+                console.log('Autoplay bloqueado:', error);
+                audioToggle.textContent = '🔇';
+            });
+        }
+    };
+
+    // Tenta tocar imediatamente
+    playAudio();
+
+    // Função melhorada para mobile
+    const startAudioOnInteraction = () => {
+        if (!audioStarted && audio) {
+            audio.currentTime = 27;
+            audio.play().then(() => {
+                audioPlaying = true;
+                audioStarted = true;
                 audioToggle.textContent = '🔊';
             }).catch(() => {
                 audioToggle.textContent = '🔇';
@@ -765,14 +902,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    playAudio();
-
-    const startAudioOnInteraction = () => {
-        playAudio();
-        document.removeEventListener('click', startAudioOnInteraction);
-    };
-
+    // Múltiplos eventos para garantir funcionamento em mobile
     document.addEventListener('click', startAudioOnInteraction, { once: true });
+    document.addEventListener('touchstart', startAudioOnInteraction, { once: true });
+    document.addEventListener('touchend', startAudioOnInteraction, { once: true });
 
     function createScreenFlash() {
         const flash = document.createElement('div');
@@ -895,7 +1028,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 audio.currentTime = 27;
                 audio.play().then(() => {
                     audioPlaying = true;
+                    audioStarted = true;
                     audioToggle.textContent = '🔊';
+                }).catch(() => {
+                    audioToggle.textContent = '🔇';
+                });
+            } else {
+                audio.pause();
+                audioPlaying = false;
+                audioToggle.textContent = '🔇';
+            }
+        });
+        
+        // Listener adicional para garantir em mobile
+        audioToggle.addEventListener('touchend', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            if (audio.paused) {
+                audio.currentTime = 27;
+                audio.play().then(() => {
+                    audioPlaying = true;
+                    audioStarted = true;
+                    audioToggle.textContent = '🔊';
+                }).catch(() => {
+                    audioToggle.textContent = '🔇';
                 });
             } else {
                 audio.pause();
@@ -935,8 +1091,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const blurOverlay = document.getElementById('blurOverlay');
     if (blurOverlay) {
+        // Evento de click para desktop
         blurOverlay.addEventListener('click', (e) => {
             createSmokeEffect(e.clientX, e.clientY);
+            screenDarken.classList.add('active');
+            setTimeout(() => {
+                screenDarken.classList.remove('active');
+            }, 4500);
+            navigateToPage('page2', horrorTransition1);
+        });
+        
+        // Evento de touch para mobile
+        blurOverlay.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const touch = e.changedTouches[0];
+            createSmokeEffect(touch.clientX, touch.clientY);
+            screenDarken.classList.add('active');
+            setTimeout(() => {
+                screenDarken.classList.remove('active');
+            }, 4500);
             navigateToPage('page2', horrorTransition1);
         });
     }
@@ -944,6 +1117,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('next')) {
             createSmokeEffect(e.clientX, e.clientY);
+            const targetPage = e.target.getAttribute('data-page');
+            if (targetPage) {
+                navigateToPage(targetPage, horrorTransition2);
+            }
+        }
+    });
+    
+    // Listener adicional para touch em mobile
+    document.addEventListener('touchend', (e) => {
+        if (e.target.classList.contains('next')) {
+            e.preventDefault();
+            const touch = e.changedTouches[0];
+            createSmokeEffect(touch.clientX, touch.clientY);
             const targetPage = e.target.getAttribute('data-page');
             if (targetPage) {
                 navigateToPage(targetPage, horrorTransition2);
