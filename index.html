@@ -2,25 +2,35 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Convite GAG</title>
 <style>
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Previne seleção de texto acidental em toques no mobile */
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 100%);
     min-height: 100vh;
+    /* Altura dinâmica para navegadores mobile com barras de URL que somem */
+    min-height: -webkit-fill-available; 
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 15px; /* Padding externo reduzido para mobile */
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden; /* Previne rolagem horizontal indesejada */
+}
+
+/* Ajuste para altura total em iOS */
+html {
+    height: -webkit-fill-available;
 }
 
 /* Efeito de névoa/fumaça animada */
@@ -42,29 +52,22 @@ body::before {
     50% { transform: translate(30px, 30px) scale(1.1); }
 }
 
-/* Efeito de sangue escorrendo */
+/* Efeito de sangue escorrendo - Ajustado para não cobrir elementos interativos no mobile */
 .blood-drip {
     position: fixed;
     width: 3px;
     background: linear-gradient(180deg, rgba(139, 0, 0, 0.8) 0%, rgba(139, 0, 0, 0) 100%);
     animation: drip 3s ease-in infinite;
     pointer-events: none;
-    z-index: 999;
+    z-index: 5; /* Z-index reduzido para ficar atrás do container principal se necessário */
     border-radius: 0 0 50% 50%;
+    top: 0;
 }
 
 @keyframes drip {
-    0% {
-        height: 0;
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    100% {
-        height: 80vh;
-        opacity: 0;
-    }
+    0% { height: 0; opacity: 0; }
+    10% { opacity: 1; }
+    100% { height: 60vh; opacity: 0; } /* Altura reduzida para não ir até o fim da tela no mobile */
 }
 
 .blood-drip:nth-child(1) { left: 15%; animation-delay: 0.5s; }
@@ -116,7 +119,8 @@ body::before {
 .horror-transition img, .horror-transition svg {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    max-width: 500px; /* Limita largura em telas grandes */
+    object-fit: contain; /* Garante que a imagem inteira apareça no mobile */
     animation: slowZoom 4s ease-in-out;
 }
 
@@ -141,6 +145,7 @@ body::before {
 
 .jumpscare.active {
     animation: jumpscareAnim 2.5s ease-out forwards;
+    pointer-events: auto; /* Bloqueia cliques durante o susto */
 }
 
 @keyframes jumpscareAnim {
@@ -166,10 +171,10 @@ body::before {
 
 #audioToggle {
     position: fixed;
-    top: 25px;
-    right: 25px;
-    width: 48px;
-    height: 48px;
+    top: 20px; /* Ajustado para evitar notches */
+    right: 20px; /* Ajustado para evitar cantos arredondados */
+    width: 44px; /* Ligeiramente menor para mobile */
+    height: 44px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
@@ -185,13 +190,8 @@ body::before {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
                 inset 0 0 15px rgba(191, 247, 163, 0.1);
     color: #BFF7A3;
-}
-
-#audioToggle:hover {
-    background: rgba(255, 255, 255, 0.12);
-    transform: scale(1.08);
-    box-shadow: 0 6px 25px rgba(191, 247, 163, 0.4),
-                inset 0 0 20px rgba(191, 247, 163, 0.15);
+    /* Aumenta a área de toque sem aumentar o botão visualmente */
+    touch-action: manipulation;
 }
 
 #app-container {
@@ -200,20 +200,24 @@ body::before {
     width: 100%;
     max-width: 500px;
     transition: opacity 0.4s ease;
+    margin: auto; /* Centraliza verticalmente se houver espaço */
 }
 
-.card {
+/* Estilos base dos Cards (Desktop first, depois ajustado nos media queries) */
+.card, .info-card, #final-gag {
     background: rgba(255, 255, 255, 0.06);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 24px;
-    padding: 60px 45px;
+    /* Padding padrão reduzido para começar já mais amigável */
+    padding: 40px 30px;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
                 inset 0 0 30px rgba(191, 247, 163, 0.08);
     text-align: center;
     position: relative;
     border: 1px solid rgba(191, 247, 163, 0.25);
     animation: fadeIn 0.9s ease;
+    width: 100%; /* Garante que ocupa a largura disponível */
 }
 
 @keyframes fadeIn {
@@ -225,6 +229,8 @@ body::before {
 .blur-overlay {
     position: relative;
     cursor: pointer;
+    /* Melhora a resposta ao toque no mobile */
+    -webkit-tap-highlight-color: rgba(191, 247, 163, 0.2);
 }
 
 .blur-content {
@@ -233,9 +239,12 @@ body::before {
     transition: all 0.3s ease;
 }
 
-.blur-overlay:hover .blur-content {
-    filter: blur(12px);
-    opacity: 0.6;
+/* Hover só funciona bem em desktop, no mobile o efeito é aplicado ao toque */
+@media (hover: hover) {
+    .blur-overlay:hover .blur-content {
+        filter: blur(12px);
+        opacity: 0.6;
+    }
 }
 
 .click-hint {
@@ -243,31 +252,27 @@ body::before {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3rem;
+    font-size: 2.5rem; /* Base menor */
     color: #BFF7A3;
     font-weight: 700;
     text-shadow: 0 0 30px rgba(191, 247, 163, 0.8);
     pointer-events: none;
     animation: pulse-hint 2s ease-in-out infinite;
-    z-index: 1;
+    z-index: 2;
+    width: 90%; /* Evita que o texto estoure a largura no mobile */
+    word-wrap: break-word;
 }
 
 @keyframes pulse-hint {
-    0%, 100% { 
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-    50% { 
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 0.8;
-    }
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.8; }
 }
 
 /* Imagem do boneco GAGsaw */
 .gagsaw-image {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 35px;
+    width: 180px; /* Base menor */
+    height: 180px;
+    margin: 0 auto 30px;
     position: relative;
     border-radius: 50%;
     overflow: hidden;
@@ -275,18 +280,18 @@ body::before {
     box-shadow: 0 0 30px rgba(191, 247, 163, 0.3),
                 inset 0 0 20px rgba(0, 0, 0, 0.5);
     animation: pulse-glow 3s ease-in-out infinite;
+    /* Otimização para mobile */
+    transform: translateZ(0); 
+    will-change: transform, box-shadow;
 }
 
 @keyframes pulse-glow {
     0%, 100% { 
-        box-shadow: 0 0 30px rgba(191, 247, 163, 0.3),
-                    inset 0 0 20px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 30px rgba(191, 247, 163, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
         transform: scale(1);
     }
     50% { 
-        box-shadow: 0 0 50px rgba(191, 247, 163, 0.5),
-                    0 0 80px rgba(191, 247, 163, 0.2),
-                    inset 0 0 30px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0 50px rgba(191, 247, 163, 0.5), 0 0 80px rgba(191, 247, 163, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.6);
         transform: scale(1.03);
     }
 }
@@ -298,43 +303,20 @@ body::before {
     filter: brightness(0.9) contrast(1.1);
 }
 
-.title {
-    font-size: 3.5rem;
-    color: #BFF7A3;
-    margin-bottom: 28px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    line-height: 1.1;
-    text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);
-}
-
-.page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-}
-
-.message {
-    font-size: 1.3rem;
-    color: #e8f8e0;
-    line-height: 1.9;
-    margin-bottom: 35px;
-    font-weight: 300;
-}
+.page { display: none; }
+.page.active { display: block; }
 
 .next {
     display: inline-block;
     margin-top: 25px;
-    padding: 16px 45px;
+    padding: 16px 40px; /* Padding lateral ligeiramente reduzido */
     background: rgba(191, 247, 163, 0.15);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     color: #BFF7A3;
     text-decoration: none;
     border-radius: 50px;
-    font-size: 0.85rem;
+    font-size: 0.9rem; /* Fonte ligeiramente maior para facilitar o toque */
     letter-spacing: 3px;
     text-transform: uppercase;
     transition: all 0.3s ease;
@@ -342,68 +324,46 @@ body::before {
     border: 2px solid rgba(191, 247, 163, 0.4);
     box-shadow: 0 0 20px rgba(191, 247, 163, 0.3);
     cursor: pointer;
-}
-
-.next:hover {
-    background: rgba(191, 247, 163, 0.25);
-    border-color: rgba(191, 247, 163, 0.6);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(191, 247, 163, 0.4);
+    /* Remove delay de toque no iOS */
+    touch-action: manipulation;
 }
 
 /* Page 2 Styles */
-.info-card {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 60px 45px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
-                inset 0 0 30px rgba(191, 247, 163, 0.08);
-    animation: fadeIn 0.9s ease;
-    border: 1px solid rgba(191, 247, 163, 0.25);
-    text-align: center;
-}
-
 .info-card h2 {
-    font-size: 2.5rem;
+    font-size: 2.2rem; /* Base menor */
     color: #BFF7A3;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);
+    line-height: 1.2;
 }
 
 .info-card p {
     color: #d0f0c0;
-    font-size: 1.15rem;
-    line-height: 1.9;
-    margin-bottom: 28px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
     font-weight: 300;
 }
 
 .info-card ul {
     list-style: none;
     text-align: left;
-    margin: 35px 0;
-    padding: 0;
+    margin: 25px 0;
+    padding: 25px 0;
     border-top: 1px solid rgba(191, 247, 163, 0.2);
     border-bottom: 1px solid rgba(191, 247, 163, 0.2);
-    padding: 30px 0;
 }
 
 .info-card li {
     color: #e8f8e0;
-    font-size: 1.05rem;
-    margin-bottom: 20px;
-    padding-left: 30px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    padding-left: 25px;
     position: relative;
-    line-height: 1.7;
+    line-height: 1.5;
     font-weight: 300;
-}
-
-.info-card li:last-child {
-    margin-bottom: 0;
 }
 
 .info-card li::before {
@@ -418,60 +378,132 @@ body::before {
     box-shadow: 0 0 10px rgba(191, 247, 163, 0.8);
 }
 
-.info-card strong {
-    font-weight: 600;
-    color: #BFF7A3;
-}
+.info-card strong { font-weight: 600; color: #BFF7A3; }
 
 /* Page 3 Styles */
 #final-gag {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 70px 45px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
-                inset 0 0 30px rgba(191, 247, 163, 0.08);
-    border: 1px solid rgba(191, 247, 163, 0.25);
-    text-align: center;
-    animation: fadeIn 0.9s ease;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #e8f8e0;
-    line-height: 1.8;
+    line-height: 1.6;
+    padding: 50px 30px;
 }
 
+/* =========================================
+   MEDIA QUERIES PARA MOBILE
+========================================= */
+
+/* Tablets e Celulares Grandes (até 600px) */
 @media (max-width: 600px) {
+    body {
+        padding: 10px;
+        align-items: flex-start; /* Em telas pequenas, permite rolar se for muito alto */
+        padding-top: 60px; /* Espaço para o botão de áudio */
+    }
+
+    #app-container {
+        margin-top: 20px;
+    }
+
     .card, .info-card, #final-gag {
-        padding: 50px 35px;
+        padding: 35px 25px; /* Reduz padding drasticamente */
+        border-radius: 18px;
     }
     
-    .title, .click-hint {
-        font-size: 2.5rem;
+    .click-hint {
+        font-size: 1.8rem;
     }
     
     .gagsaw-image {
-        width: 160px;
-        height: 160px;
+        width: 140px;
+        height: 140px;
+        margin-bottom: 25px;
     }
     
     .info-card h2 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .info-card p {
+        font-size: 1rem;
+    }
+
+    .info-card li {
+        font-size: 0.95rem;
+        padding-left: 20px;
+    }
+
+    .next {
+        width: 100%; /* Botão largura total no mobile facilita o clique */
+        padding: 14px 0;
+        letter-spacing: 2px;
+    }
+
+    #final-gag {
+        font-size: 1.3rem;
+    }
+
+    #audioToggle {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+}
+
+/* Celulares Pequenos e Médios (até 400px - ex: iPhone SE, Androids menores) */
+@media (max-width: 400px) {
+    .card, .info-card, #final-gag {
+        padding: 30px 20px; /* Padding mínimo para economizar espaço */
+    }
+
+    .click-hint {
+        font-size: 1.5rem; /* Texto de dica menor para não quebrar */
+    }
+
+    .gagsaw-image {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 20px;
+        border-width: 2px;
+    }
+
+    .info-card h2 {
+        font-size: 1.5rem;
+    }
+
+    .info-card ul {
+        margin: 15px 0;
+        padding: 15px 0;
+    }
+
+    .info-card li {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
+
+    #final-gag {
+        font-size: 1.2rem;
+        padding: 40px 20px;
+    }
+
+    /* Ajusta transições para telas muito estreitas */
+    .horror-transition svg {
+         transform: scale(0.8); /* Diminui o SVG da transição */
     }
 }
 </style>
 </head>
 <body>
 
-  <!-- Efeito de sangue escorrendo -->
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
 
-  <!-- Horror transitions -->
   <div class="horror-transition" id="horrorTransition1">
-    <!-- Pennywise (IT) -->
     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <radialGradient id="bgGrad">
@@ -480,49 +512,35 @@ body::before {
         </radialGradient>
       </defs>
       <rect width="400" height="400" fill="url(#bgGrad)"/>
-      <!-- Rosto branco -->
       <ellipse cx="200" cy="180" rx="80" ry="95" fill="#f0f0f0"/>
-      <!-- Cabelo laranja -->
       <path d="M 120 140 Q 110 100 120 80 Q 140 60 160 70 Q 180 50 200 55 Q 220 50 240 70 Q 260 60 280 80 Q 290 100 280 140" fill="#ff6600" opacity="0.9"/>
-      <!-- Olhos aterrorizantes -->
       <ellipse cx="175" cy="165" rx="12" ry="18" fill="#000"/>
       <ellipse cx="225" cy="165" rx="12" ry="18" fill="#000"/>
       <circle cx="177" cy="162" r="4" fill="#ff0000"/>
       <circle cx="227" cy="162" r="4" fill="#ff0000"/>
-      <!-- Nariz vermelho -->
       <circle cx="200" cy="190" r="12" fill="#ff0000"/>
-      <!-- Boca assustadora -->
       <path d="M 160 210 Q 200 240 240 210" stroke="#ff0000" stroke-width="4" fill="none"/>
       <path d="M 165 215 L 168 225 M 180 220 L 182 232 M 200 225 L 200 238 M 220 220 L 218 232 M 235 215 L 232 225" stroke="#fff" stroke-width="2"/>
-      <!-- Sombras -->
       <ellipse cx="200" cy="260" rx="60" ry="8" fill="#000" opacity="0.3"/>
-      <!-- Texto -->
       <text x="200" y="340" font-family="serif" font-size="32" fill="#ff0000" text-anchor="middle" font-weight="bold">YOU'LL FLOAT TOO...</text>
     </svg>
   </div>
 
   <div class="horror-transition" id="horrorTransition2">
-    <!-- Ghostface (Scream) -->
     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
       <rect width="400" height="400" fill="#000000"/>
-      <!-- Máscara branca -->
       <path d="M 200 80 Q 160 85 140 110 Q 130 140 135 170 Q 140 210 155 240 Q 170 270 200 280 Q 230 270 245 240 Q 260 210 265 170 Q 270 140 260 110 Q 240 85 200 80 Z" fill="#f5f5f5" stroke="#1a1a1a" stroke-width="2"/>
-      <!-- Olhos -->
       <ellipse cx="175" cy="150" rx="18" ry="35" fill="#000" transform="rotate(-15 175 150)"/>
       <ellipse cx="225" cy="150" rx="18" ry="35" fill="#000" transform="rotate(15 225 150)"/>
-      <!-- Boca gritando -->
       <ellipse cx="200" cy="210" rx="15" ry="35" fill="#000"/>
       <path d="M 185 205 Q 200 190 215 205" stroke="#000" stroke-width="3" fill="none"/>
-      <!-- Sombras dramáticas -->
       <path d="M 140 110 Q 145 130 150 150" stroke="#ccc" stroke-width="1" fill="none" opacity="0.5"/>
       <path d="M 260 110 Q 255 130 250 150" stroke="#ccc" stroke-width="1" fill="none" opacity="0.5"/>
-      <!-- Texto -->
       <text x="200" y="350" font-family="serif" font-size="28" fill="#ff0000" text-anchor="middle" font-weight="bold">WHAT'S YOUR FAVORITE</text>
       <text x="200" y="380" font-family="serif" font-size="28" fill="#ff0000" text-anchor="middle" font-weight="bold">SCARY MOVIE?</text>
     </svg>
   </div>
 
-  <!-- Jumpscare overlay -->
   <div class="jumpscare" id="jumpscare">
     <img src="GAGsaw.jpg" alt="JUMPSCARE">
   </div>
@@ -532,7 +550,6 @@ body::before {
   <button id="audioToggle">🔊</button>
 
   <div id="app-container">
-    <!-- PÁGINA 1 - Preview embaçado -->
     <div id="page1" class="page active">
       <div class="blur-overlay" id="blurOverlay">
         <div class="click-hint">CLICA AQUI PUT@</div>
@@ -551,7 +568,6 @@ body::before {
       </div>
     </div>
 
-    <!-- PÁGINA 2 - Informações com imagem GAGsaw -->
     <div id="page2" class="page">
       <div class="info-card">
         <div class="gagsaw-image">
@@ -569,7 +585,6 @@ body::before {
       </div>
     </div>
 
-    <!-- PÁGINA 3 - Revelação final -->
     <div id="page3" class="page">
       <div id="final-gag">
         MENTIRA SEUS OTÁRIOS 😈<br><br>
@@ -590,17 +605,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let audioPlaying = false;
     
+    // Tenta definir o tempo inicial imediatamente (caso os metadados já estejam prontos)
+    audio.currentTime = 27;
+
     const playAudio = () => {
         if (!audioPlaying) {
-            audio.play().then(() =>00:27 {
+            // Garante que o áudio comece nos 27s se ainda estiver no início
+            if (audio.currentTime < 27) {
+                audio.currentTime = 27;
+            }
+
+            audio.play().then(() => {
                 audioPlaying = true;
                 audioToggle.textContent = '🔊';
             }).catch(() => {
+                // Autoplay bloqueado é comum em mobile até a primeira interação
                 audioToggle.textContent = '🔇';
             });
         }
     };
 
+    // Tenta tocar, mas em mobile geralmente requer o primeiro clique
     playAudio();
 
     const startAudioOnInteraction = () => {
@@ -610,7 +635,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.addEventListener('click', startAudioOnInteraction);
-    document.addEventListener('touchstart', startAudioOnInteraction);
+    // Adiciona touchstart para resposta mais rápida em mobile
+    document.addEventListener('touchstart', startAudioOnInteraction, { passive: true });
 
     function createScreenFlash() {
         const flash = document.createElement('div');
@@ -632,9 +658,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function showHorrorTransition(transitionElement, callback) {
         transitionElement.classList.add('active');
         
+        // O tempo aqui deve casar com a animação CSS (4s)
+        // O callback roda no meio da transição (quando está tudo preto)
+        setTimeout(() => {
+             if (callback) callback();
+        }, 2000); // Executa a troca de página no meio da animação
+
         setTimeout(() => {
             transitionElement.classList.remove('active');
-            if (callback) callback();
         }, 4000);
     }
 
@@ -667,11 +698,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // Mostra a página solicitada
             const targetPage = document.getElementById(pageId);
             if (targetPage) {
+                // Pequeno fade out/in do container para suavizar a troca
                 appContainer.style.opacity = '0';
                 setTimeout(() => {
                     targetPage.classList.add('active');
                     appContainer.style.opacity = '1';
-                }, 400);
+                    
+                    // Se for a última página, dispara o jumpscare após a transição
+                    if (pageId === 'page3') {
+                         setTimeout(triggerJumpscare, 500);
+                    }
+                }, 200);
             }
         });
     }
