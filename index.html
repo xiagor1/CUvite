@@ -462,13 +462,16 @@ body::before {
 </head>
 <body>
 
+  <!-- Efeito de sangue escorrendo -->
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
 
+  <!-- Horror transitions -->
   <div class="horror-transition" id="horrorTransition1">
+    <!-- Pennywise (IT) -->
     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <radialGradient id="bgGrad">
@@ -477,35 +480,49 @@ body::before {
         </radialGradient>
       </defs>
       <rect width="400" height="400" fill="url(#bgGrad)"/>
+      <!-- Rosto branco -->
       <ellipse cx="200" cy="180" rx="80" ry="95" fill="#f0f0f0"/>
+      <!-- Cabelo laranja -->
       <path d="M 120 140 Q 110 100 120 80 Q 140 60 160 70 Q 180 50 200 55 Q 220 50 240 70 Q 260 60 280 80 Q 290 100 280 140" fill="#ff6600" opacity="0.9"/>
+      <!-- Olhos aterrorizantes -->
       <ellipse cx="175" cy="165" rx="12" ry="18" fill="#000"/>
       <ellipse cx="225" cy="165" rx="12" ry="18" fill="#000"/>
       <circle cx="177" cy="162" r="4" fill="#ff0000"/>
       <circle cx="227" cy="162" r="4" fill="#ff0000"/>
+      <!-- Nariz vermelho -->
       <circle cx="200" cy="190" r="12" fill="#ff0000"/>
+      <!-- Boca assustadora -->
       <path d="M 160 210 Q 200 240 240 210" stroke="#ff0000" stroke-width="4" fill="none"/>
       <path d="M 165 215 L 168 225 M 180 220 L 182 232 M 200 225 L 200 238 M 220 220 L 218 232 M 235 215 L 232 225" stroke="#fff" stroke-width="2"/>
+      <!-- Sombras -->
       <ellipse cx="200" cy="260" rx="60" ry="8" fill="#000" opacity="0.3"/>
+      <!-- Texto -->
       <text x="200" y="340" font-family="serif" font-size="32" fill="#ff0000" text-anchor="middle" font-weight="bold">YOU'LL FLOAT TOO...</text>
     </svg>
   </div>
 
   <div class="horror-transition" id="horrorTransition2">
+    <!-- Ghostface (Scream) -->
     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
       <rect width="400" height="400" fill="#000000"/>
+      <!-- Máscara branca -->
       <path d="M 200 80 Q 160 85 140 110 Q 130 140 135 170 Q 140 210 155 240 Q 170 270 200 280 Q 230 270 245 240 Q 260 210 265 170 Q 270 140 260 110 Q 240 85 200 80 Z" fill="#f5f5f5" stroke="#1a1a1a" stroke-width="2"/>
+      <!-- Olhos -->
       <ellipse cx="175" cy="150" rx="18" ry="35" fill="#000" transform="rotate(-15 175 150)"/>
       <ellipse cx="225" cy="150" rx="18" ry="35" fill="#000" transform="rotate(15 225 150)"/>
+      <!-- Boca gritando -->
       <ellipse cx="200" cy="210" rx="15" ry="35" fill="#000"/>
       <path d="M 185 205 Q 200 190 215 205" stroke="#000" stroke-width="3" fill="none"/>
+      <!-- Sombras dramáticas -->
       <path d="M 140 110 Q 145 130 150 150" stroke="#ccc" stroke-width="1" fill="none" opacity="0.5"/>
       <path d="M 260 110 Q 255 130 250 150" stroke="#ccc" stroke-width="1" fill="none" opacity="0.5"/>
+      <!-- Texto -->
       <text x="200" y="350" font-family="serif" font-size="28" fill="#ff0000" text-anchor="middle" font-weight="bold">WHAT'S YOUR FAVORITE</text>
       <text x="200" y="380" font-family="serif" font-size="28" fill="#ff0000" text-anchor="middle" font-weight="bold">SCARY MOVIE?</text>
     </svg>
   </div>
 
+  <!-- Jumpscare overlay -->
   <div class="jumpscare" id="jumpscare">
     <img src="GAGsaw.jpg" alt="JUMPSCARE">
   </div>
@@ -515,6 +532,7 @@ body::before {
   <button id="audioToggle">🔊</button>
 
   <div id="app-container">
+    <!-- PÁGINA 1 - Preview embaçado -->
     <div id="page1" class="page active">
       <div class="blur-overlay" id="blurOverlay">
         <div class="click-hint">CLICA AQUI PUT@</div>
@@ -533,6 +551,7 @@ body::before {
       </div>
     </div>
 
+    <!-- PÁGINA 2 - Informações com imagem GAGsaw -->
     <div id="page2" class="page">
       <div class="info-card">
         <div class="gagsaw-image">
@@ -550,6 +569,7 @@ body::before {
       </div>
     </div>
 
+    <!-- PÁGINA 3 - Revelação final -->
     <div id="page3" class="page">
       <div id="final-gag">
         MENTIRA SEUS OTÁRIOS 😈<br><br>
@@ -570,16 +590,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let audioPlaying = false;
     
-    // Tenta definir o tempo inicial imediatamente (caso os metadados já estejam prontos)
-    audio.currentTime = 27;
-
     const playAudio = () => {
         if (!audioPlaying) {
-            // Garante que o áudio comece nos 27s se ainda estiver no início
-            if (audio.currentTime === 27) {
-                audio.currentTime = 27;
-            }
-
             audio.play().then(() => {
                 audioPlaying = true;
                 audioToggle.textContent = '🔊';
@@ -630,9 +642,6 @@ document.addEventListener('DOMContentLoaded', () => {
         audioToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             if (audio.paused) {
-                // Se foi pausado e reiniciado, e por acaso voltou pro 0 (loop),
-                // aqui não resetamos para 27 para permitir que o loop flua,
-                // a menos que você queira forçar SEMPRE 27s ao dar play manual.
                 audio.play().then(() => {
                     audioPlaying = true;
                     audioToggle.textContent = '🔊';
@@ -666,6 +675,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    
+ let audioPlaying = false;
+    
+    audio.currentTime = 27;
+
+    const playAudio = () => {
+        if (!audioPlaying) {
+            // Garante que o áudio comece nos 27s se ainda estiver no início
+            if (audio.currentTime === 27) {
+                audio.currentTime = 27;
+            }
+
+            audio.play().then(() => {
+                audioPlaying = true;
+                audioToggle.textContent = '🔊';
+            }).catch(() => {
+                audioToggle.textContent = '🔇';
+            });
+        }
+    };
 
     // Clique na página 1 (blur overlay)
     const blurOverlay = document.getElementById('blurOverlay');
