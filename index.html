@@ -1237,20 +1237,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomMsg = messages[Math.floor(Math.random() * messages.length)];
         subliminalMsg.textContent = randomMsg;
         subliminalMsg.classList.add('active');
-        setTimeout(() => subliminalMsg.classList.remove('active'), 80);
+        setTimeout(() => subliminalMsg.classList.remove('active'), 100);
     }
 
     // Rachadura na tela
     function crackScreen() {
         screenCrack.classList.add('active');
-        setTimeout(() => screenCrack.classList.remove('active'), 3000);
+        setTimeout(() => screenCrack.classList.remove('active'), 2000);
     }
 
     // Figura sombria passando
     function shadowPass() {
         shadowFigure.style.left = '-200px';
         shadowFigure.classList.add('active');
-        setTimeout(() => shadowFigure.classList.remove('active'), 4000);
+        setTimeout(() => shadowFigure.classList.remove('active'), 3000);
     }
 
     // Mãos assustadoras
