@@ -2,41 +2,31 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Convite GAG</title>
 <style>
-/* Reset básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html, body {
-    min-height: 100%;
-    /* Correção para altura no mobile */
-    min-height: -webkit-fill-available;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 100%);
+    min-height: 100vh;
     display: flex;
-    align-items: center; /* Centraliza verticalmente se couber */
+    align-items: center;
     justify-content: center;
-    padding: 20px 15px;
+    padding: 20px;
     position: relative;
-    
-    /* IMPORTANTE: Permite rolagem vertical, bloqueia horizontal */
-    overflow-y: auto; 
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* Efeito de névoa/fumaça animada */
 body::before {
     content: '';
-    position: fixed; /* Fixed para não rolar com a tela */
+    position: fixed;
     top: -50%;
     left: -50%;
     width: 200%;
@@ -52,22 +42,29 @@ body::before {
     50% { transform: translate(30px, 30px) scale(1.1); }
 }
 
-/* Sangue (Fixo no fundo) */
+/* Efeito de sangue escorrendo */
 .blood-drip {
-    position: fixed; 
+    position: fixed;
     width: 3px;
     background: linear-gradient(180deg, rgba(139, 0, 0, 0.8) 0%, rgba(139, 0, 0, 0) 100%);
     animation: drip 3s ease-in infinite;
     pointer-events: none;
-    z-index: 5;
+    z-index: 999;
     border-radius: 0 0 50% 50%;
-    top: 0;
 }
 
 @keyframes drip {
-    0% { height: 0; opacity: 0; }
-    10% { opacity: 1; }
-    100% { height: 60vh; opacity: 0; }
+    0% {
+        height: 0;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        height: 80vh;
+        opacity: 0;
+    }
 }
 
 .blood-drip:nth-child(1) { left: 15%; animation-delay: 0.5s; }
@@ -76,7 +73,7 @@ body::before {
 .blood-drip:nth-child(4) { left: 72%; animation-delay: 1.5s; width: 5px; }
 .blood-drip:nth-child(5) { left: 88%; animation-delay: 0.3s; }
 
-/* Transições e Flashes */
+/* Flash de tela (piscar vermelho) */
 .screen-flash {
     position: fixed;
     inset: 0;
@@ -84,7 +81,7 @@ body::before {
     opacity: 0;
     pointer-events: none;
     z-index: 9999;
-    animation: flash 0.15s ease-out;
+    animation: flash 0.2s ease-out;
 }
 
 @keyframes flash {
@@ -92,6 +89,75 @@ body::before {
     50% { opacity: 1; }
 }
 
+/* Efeito de glitch assustador */
+.glitch-effect {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9997;
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: difference;
+}
+
+.glitch-effect.active {
+    animation: glitchFlash 0.5s steps(5) 3;
+}
+
+@keyframes glitchFlash {
+    0%, 100% { opacity: 0; }
+    10%, 30%, 50%, 70%, 90% { opacity: 1; }
+    20%, 40%, 60%, 80% { opacity: 0; }
+}
+
+/* Efeito de distorção VHS */
+.vhs-effect {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1) 0px,
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 9996;
+    opacity: 0;
+    animation: vhsScan 0.1s linear infinite;
+}
+
+.vhs-effect.active {
+    opacity: 0.4;
+}
+
+@keyframes vhsScan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(2px); }
+}
+
+/* Efeito de estática */
+.static-effect {
+    position: fixed;
+    inset: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.3"/></svg>');
+    pointer-events: none;
+    z-index: 9995;
+    opacity: 0;
+    animation: staticNoise 0.2s steps(2) infinite;
+}
+
+.static-effect.active {
+    opacity: 0.5;
+}
+
+@keyframes staticNoise {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-2px, 2px); }
+    100% { transform: translate(2px, -2px); }
+}
+
+/* Transição assustadora - Container */
 .horror-transition {
     position: fixed;
     inset: 0;
@@ -118,8 +184,7 @@ body::before {
 .horror-transition img, .horror-transition svg {
     width: 100%;
     height: 100%;
-    max-width: 500px;
-    object-fit: contain;
+    object-fit: cover;
     animation: slowZoom 4s ease-in-out;
 }
 
@@ -129,7 +194,7 @@ body::before {
     100% { transform: scale(1.2); filter: brightness(0.4); }
 }
 
-/* Jumpscare */
+/* Jumpscare effect para página 3 */
 .jumpscare {
     position: fixed;
     inset: 0;
@@ -144,7 +209,6 @@ body::before {
 
 .jumpscare.active {
     animation: jumpscareAnim 2.5s ease-out forwards;
-    pointer-events: auto;
 }
 
 @keyframes jumpscareAnim {
@@ -168,12 +232,12 @@ body::before {
     75% { transform: translate(-10px, -10px) rotate(-1deg); }
 }
 
-#Toggle {
+#audioToggle {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 44px;
-    height: 44px;
+    top: 25px;
+    right: 25px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
@@ -185,37 +249,39 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                inset 0 0 15px rgba(191, 247, 163, 0.1);
     color: #BFF7A3;
-    touch-action: manipulation;
 }
 
-/* Container Principal */
+#audioToggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.08);
+    box-shadow: 0 6px 25px rgba(191, 247, 163, 0.4),
+                inset 0 0 20px rgba(191, 247, 163, 0.15);
+}
+
 #app-container {
     position: relative;
     z-index: 10;
     width: 100%;
     max-width: 500px;
     transition: opacity 0.4s ease;
-    /* Garante que o container tenha margem automática para centralizar ou rolar */
-    margin: auto; 
 }
 
-.card, .info-card, #final-gag {
+.card {
     background: rgba(255, 255, 255, 0.06);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 24px;
-    padding: 40px 30px;
+    padding: 60px 45px;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
                 inset 0 0 30px rgba(191, 247, 163, 0.08);
     text-align: center;
     position: relative;
     border: 1px solid rgba(191, 247, 163, 0.25);
     animation: fadeIn 0.9s ease;
-    width: 100%;
-    /* Garante que o conteúdo não vaze do card */
-    overflow: hidden; 
 }
 
 @keyframes fadeIn {
@@ -223,11 +289,10 @@ body::before {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Estilos de Texto e Elementos */
+/* Página 1 - Preview embaçado */
 .blur-overlay {
     position: relative;
     cursor: pointer;
-    -webkit-tap-highlight-color: rgba(191, 247, 163, 0.2);
 }
 
 .blur-content {
@@ -236,43 +301,62 @@ body::before {
     transition: all 0.3s ease;
 }
 
+.blur-overlay:hover .blur-content {
+    filter: blur(12px);
+    opacity: 0.6;
+}
+
 .click-hint {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2.2rem;
+    font-size: 3rem;
     color: #BFF7A3;
     font-weight: 700;
     text-shadow: 0 0 30px rgba(191, 247, 163, 0.8);
     pointer-events: none;
     animation: pulse-hint 2s ease-in-out infinite;
-    z-index: 2;
-    width: 90%;
-    word-wrap: break-word;
+    z-index: 1;
 }
 
 @keyframes pulse-hint {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.8; }
+    0%, 100% { 
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.8;
+    }
 }
 
+/* Imagem do boneco GAGsaw */
 .gagsaw-image {
-    width: 160px;
-    height: 160px;
-    margin: 0 auto 30px;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 35px;
     position: relative;
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid rgba(191, 247, 163, 0.4);
-    box-shadow: 0 0 30px rgba(191, 247, 163, 0.3);
+    box-shadow: 0 0 30px rgba(191, 247, 163, 0.3),
+                inset 0 0 20px rgba(0, 0, 0, 0.5);
     animation: pulse-glow 3s ease-in-out infinite;
-    transform: translateZ(0); 
 }
 
 @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 30px rgba(191, 247, 163, 0.3); transform: scale(1); }
-    50% { box-shadow: 0 0 50px rgba(191, 247, 163, 0.5); transform: scale(1.03); }
+    0%, 100% { 
+        box-shadow: 0 0 30px rgba(191, 247, 163, 0.3),
+                    inset 0 0 20px rgba(0, 0, 0, 0.5);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 50px rgba(191, 247, 163, 0.5),
+                    0 0 80px rgba(191, 247, 163, 0.2),
+                    inset 0 0 30px rgba(0, 0, 0, 0.6);
+        transform: scale(1.03);
+    }
 }
 
 .gagsaw-image img {
@@ -282,58 +366,112 @@ body::before {
     filter: brightness(0.9) contrast(1.1);
 }
 
-.page { display: none; }
-.page.active { display: block; }
+.title {
+    font-size: 3.5rem;
+    color: #BFF7A3;
+    margin-bottom: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.message {
+    font-size: 1.3rem;
+    color: #e8f8e0;
+    line-height: 1.9;
+    margin-bottom: 35px;
+    font-weight: 300;
+}
 
 .next {
     display: inline-block;
     margin-top: 25px;
-    padding: 16px 40px;
+    padding: 16px 45px;
     background: rgba(191, 247, 163, 0.15);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: #BFF7A3;
     text-decoration: none;
     border-radius: 50px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     letter-spacing: 3px;
     text-transform: uppercase;
+    transition: all 0.3s ease;
     font-weight: 600;
     border: 2px solid rgba(191, 247, 163, 0.4);
     box-shadow: 0 0 20px rgba(191, 247, 163, 0.3);
     cursor: pointer;
 }
 
+.next:hover {
+    background: rgba(191, 247, 163, 0.25);
+    border-color: rgba(191, 247, 163, 0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(191, 247, 163, 0.4);
+}
+
+/* Page 2 Styles */
+.info-card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 60px 45px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(191, 247, 163, 0.08);
+    animation: fadeIn 0.9s ease;
+    border: 1px solid rgba(191, 247, 163, 0.25);
+    text-align: center;
+}
+
 .info-card h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #BFF7A3;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
     font-weight: 700;
-    line-height: 1.2;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);
 }
 
 .info-card p {
     color: #d0f0c0;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    margin-bottom: 28px;
+    font-weight: 300;
 }
 
 .info-card ul {
     list-style: none;
     text-align: left;
-    margin: 25px 0;
-    padding: 25px 0;
+    margin: 35px 0;
+    padding: 0;
     border-top: 1px solid rgba(191, 247, 163, 0.2);
     border-bottom: 1px solid rgba(191, 247, 163, 0.2);
+    padding: 30px 0;
 }
 
 .info-card li {
     color: #e8f8e0;
-    font-size: 1rem;
-    margin-bottom: 15px;
-    padding-left: 25px;
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+    padding-left: 30px;
     position: relative;
-    line-height: 1.5;
+    line-height: 1.7;
+    font-weight: 300;
+}
+
+.info-card li:last-child {
+    margin-bottom: 0;
 }
 
 .info-card li::before {
@@ -345,56 +483,68 @@ body::before {
     height: 8px;
     background: #BFF7A3;
     border-radius: 50%;
+    box-shadow: 0 0 10px rgba(191, 247, 163, 0.8);
 }
 
+.info-card strong {
+    font-weight: 600;
+    color: #BFF7A3;
+}
+
+/* Page 3 Styles */
 #final-gag {
-    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 70px 45px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(191, 247, 163, 0.08);
+    border: 1px solid rgba(191, 247, 163, 0.25);
+    text-align: center;
+    animation: fadeIn 0.9s ease;
+    font-size: 1.8rem;
     color: #e8f8e0;
-    line-height: 1.6;
-    padding: 50px 30px;
+    line-height: 1.8;
 }
 
-/* Media Queries */
 @media (max-width: 600px) {
-    /* Permite rolagem e ajusta espaçamento superior no mobile */
-    body {
-        display: block; /* Remove flexbox forçado no mobile para permitir fluxo natural */
-        padding-top: 80px; /* Espaço para o botão de áudio não cobrir texto */
-        padding-bottom: 40px;
-    }
-
-    #app-container {
-        margin-top: 10px;
-    }
-
     .card, .info-card, #final-gag {
-        padding: 30px 20px;
+        padding: 50px 35px;
+    }
+    
+    .title, .click-hint {
+        font-size: 2.5rem;
     }
     
     .gagsaw-image {
-        width: 130px;
-        height: 130px;
+        width: 160px;
+        height: 160px;
     }
     
     .info-card h2 {
-        font-size: 1.6rem;
-    }
-    
-    .click-hint {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
 }
 </style>
 </head>
 <body>
 
+  <!-- Efeito de sangue escorrendo -->
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
 
+  <!-- Efeitos de transição assustadores -->
+  <div class="glitch-effect" id="glitchEffect"></div>
+  <div class="vhs-effect" id="vhsEffect"></div>
+  <div class="static-effect" id="staticEffect"></div>
+
+  <!-- Horror transitions -->
   <div class="horror-transition" id="horrorTransition1">
+    <!-- Pennywise (IT) -->
     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <radialGradient id="bgGrad">
@@ -403,44 +553,59 @@ body::before {
         </radialGradient>
       </defs>
       <rect width="400" height="400" fill="url(#bgGrad)"/>
+      <!-- Rosto branco -->
       <ellipse cx="200" cy="180" rx="80" ry="95" fill="#f0f0f0"/>
+      <!-- Cabelo laranja -->
       <path d="M 120 140 Q 110 100 120 80 Q 140 60 160 70 Q 180 50 200 55 Q 220 50 240 70 Q 260 60 280 80 Q 290 100 280 140" fill="#ff6600" opacity="0.9"/>
+      <!-- Olhos aterrorizantes -->
       <ellipse cx="175" cy="165" rx="12" ry="18" fill="#000"/>
       <ellipse cx="225" cy="165" rx="12" ry="18" fill="#000"/>
       <circle cx="177" cy="162" r="4" fill="#ff0000"/>
       <circle cx="227" cy="162" r="4" fill="#ff0000"/>
+      <!-- Nariz vermelho -->
       <circle cx="200" cy="190" r="12" fill="#ff0000"/>
+      <!-- Boca assustadora -->
       <path d="M 160 210 Q 200 240 240 210" stroke="#ff0000" stroke-width="4" fill="none"/>
       <path d="M 165 215 L 168 225 M 180 220 L 182 232 M 200 225 L 200 238 M 220 220 L 218 232 M 235 215 L 232 225" stroke="#fff" stroke-width="2"/>
+      <!-- Sombras -->
       <ellipse cx="200" cy="260" rx="60" ry="8" fill="#000" opacity="0.3"/>
+      <!-- Texto -->
       <text x="200" y="340" font-family="serif" font-size="32" fill="#ff0000" text-anchor="middle" font-weight="bold">YOU'LL FLOAT TOO...</text>
     </svg>
   </div>
 
   <div class="horror-transition" id="horrorTransition2">
+    <!-- Ghostface (Scream) -->
     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
       <rect width="400" height="400" fill="#000000"/>
+      <!-- Máscara branca -->
       <path d="M 200 80 Q 160 85 140 110 Q 130 140 135 170 Q 140 210 155 240 Q 170 270 200 280 Q 230 270 245 240 Q 260 210 265 170 Q 270 140 260 110 Q 240 85 200 80 Z" fill="#f5f5f5" stroke="#1a1a1a" stroke-width="2"/>
+      <!-- Olhos -->
       <ellipse cx="175" cy="150" rx="18" ry="35" fill="#000" transform="rotate(-15 175 150)"/>
       <ellipse cx="225" cy="150" rx="18" ry="35" fill="#000" transform="rotate(15 225 150)"/>
+      <!-- Boca gritando -->
       <ellipse cx="200" cy="210" rx="15" ry="35" fill="#000"/>
       <path d="M 185 205 Q 200 190 215 205" stroke="#000" stroke-width="3" fill="none"/>
+      <!-- Sombras dramáticas -->
       <path d="M 140 110 Q 145 130 150 150" stroke="#ccc" stroke-width="1" fill="none" opacity="0.5"/>
       <path d="M 260 110 Q 255 130 250 150" stroke="#ccc" stroke-width="1" fill="none" opacity="0.5"/>
+      <!-- Texto -->
       <text x="200" y="350" font-family="serif" font-size="28" fill="#ff0000" text-anchor="middle" font-weight="bold">WHAT'S YOUR FAVORITE</text>
       <text x="200" y="380" font-family="serif" font-size="28" fill="#ff0000" text-anchor="middle" font-weight="bold">SCARY MOVIE?</text>
     </svg>
   </div>
 
+  <!-- Jumpscare overlay -->
   <div class="jumpscare" id="jumpscare">
     <img src="GAGsaw.jpg" alt="JUMPSCARE">
   </div>
 
-  <audio id="bgAudio" src="babi2k.mp3" loop preload="auto"></audio>
-  <audio id="screamAudio" src="scream.mp3" preload="auto"></audio>
+  <audio id="bgAudio" src="babi2k.mp3" loop></audio>
+  <audio id="screamAudio" src="scream.mp3"></audio>
   <button id="audioToggle">🔊</button>
 
   <div id="app-container">
+    <!-- PÁGINA 1 - Preview embaçado -->
     <div id="page1" class="page active">
       <div class="blur-overlay" id="blurOverlay">
         <div class="click-hint">CLICA AQUI PUT@</div>
@@ -459,6 +624,7 @@ body::before {
       </div>
     </div>
 
+    <!-- PÁGINA 2 - Informações com imagem GAGsaw -->
     <div id="page2" class="page">
       <div class="info-card">
         <div class="gagsaw-image">
@@ -476,6 +642,7 @@ body::before {
       </div>
     </div>
 
+    <!-- PÁGINA 3 - Revelação final -->
     <div id="page3" class="page">
       <div id="final-gag">
         MENTIRA SEUS OTÁRIOS 😈<br><br>
@@ -493,101 +660,129 @@ document.addEventListener('DOMContentLoaded', () => {
     const jumpscare = document.getElementById('jumpscare');
     const horrorTransition1 = document.getElementById('horrorTransition1');
     const horrorTransition2 = document.getElementById('horrorTransition2');
+    const glitchEffect = document.getElementById('glitchEffect');
+    const vhsEffect = document.getElementById('vhsEffect');
+    const staticEffect = document.getElementById('staticEffect');
 
-    let firstInteraction = true;
-
-    // Função robusta para iniciar o áudio no tempo certo
-    const startAudioContext = () => {
-        if (firstInteraction) {
-            // No mobile, só podemos mudar o tempo DEPOIS que o usuário interagiu
-            // e DENTRO do evento de interação
-            audio.currentTime = 27; 
-            
+    let audioPlaying = false;
+    
+    const playAudio = () => {
+        if (!audioPlaying) {
             audio.play().then(() => {
+                audioPlaying = true;
                 audioToggle.textContent = '🔊';
-                firstInteraction = false;
-            }).catch(e => {
-                console.log("Audio block:", e);
+            }).catch(() => {
                 audioToggle.textContent = '🔇';
             });
         }
     };
 
-    // Adiciona listeners para garantir play no primeiro toque
-    document.addEventListener('click', startAudioContext);
-    document.addEventListener('touchstart', startAudioContext, { passive: true });
+    playAudio();
 
-    // Alternar áudio manualmente
-    if (audioToggle) {
-        audioToggle.addEventListener('click', (e) => {
-            e.stopPropagation(); // Impede que dispare outros clicks
-            if (audio.paused) {
-                // Se o usuário pausou e deu play de novo, não forçamos 27s,
-                // a menos que nunca tenha tocado antes.
-                if (firstInteraction) audio.currentTime = 27;
-                
-                audio.play();
-                audioToggle.textContent = '🔊';
-                firstInteraction = false;
-            } else {
-                audio.pause();
-                audioToggle.textContent = '🔇';
-            }
-        });
-    }
+    const startAudioOnInteraction = () => {
+        playAudio();
+        document.removeEventListener('click', startAudioOnInteraction);
+        document.removeEventListener('touchstart', startAudioOnInteraction);
+    };
+
+    document.addEventListener('click', startAudioOnInteraction);
+    document.addEventListener('touchstart', startAudioOnInteraction);
 
     function createScreenFlash() {
         const flash = document.createElement('div');
         flash.className = 'screen-flash';
         document.body.appendChild(flash);
-        setTimeout(() => flash.remove(), 150);
+        setTimeout(() => flash.remove(), 200);
+    }
+
+    // Efeitos assustadores
+    function triggerScaryEffects() {
+        // Glitch effect
+        glitchEffect.classList.add('active');
+        setTimeout(() => glitchEffect.classList.remove('active'), 1500);
+        
+        // VHS effect
+        vhsEffect.classList.add('active');
+        setTimeout(() => vhsEffect.classList.remove('active'), 2000);
+        
+        // Static effect
+        staticEffect.classList.add('active');
+        setTimeout(() => staticEffect.classList.remove('active'), 1800);
     }
 
     function triggerJumpscare() {
         jumpscare.classList.add('active');
-        screamAudio.play().catch(() => console.log('Scream blocked'));
-        setTimeout(() => { jumpscare.classList.remove('active'); }, 2500);
+        screamAudio.play().catch(() => console.log('Scream audio blocked'));
+        
+        setTimeout(() => {
+            jumpscare.classList.remove('active');
+        }, 2500);
     }
 
+    // Transição de terror
     function showHorrorTransition(transitionElement, callback) {
         transitionElement.classList.add('active');
-        setTimeout(() => { if (callback) callback(); }, 2000);
-        setTimeout(() => { transitionElement.classList.remove('active'); }, 4000);
+        
+        setTimeout(() => {
+            transitionElement.classList.remove('active');
+            if (callback) callback();
+        }, 4000);
+    }
+
+    if (audioToggle && audio) {
+        audioToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (audio.paused) {
+                audio.play().then(() => {
+                    audioPlaying = true;
+                    audioToggle.textContent = '🔊';
+                });
+            } else {
+                audio.pause();
+                audioPlaying = false;
+                audioToggle.textContent = '🔇';
+            }
+        });
     }
 
     function navigateToPage(pageId, transitionElement) {
         createScreenFlash();
+        triggerScaryEffects(); // Ativa efeitos assustadores
+        
+        // Mostra transição de terror
         showHorrorTransition(transitionElement, () => {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            // Esconde todas as páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Mostra a página solicitada
             const targetPage = document.getElementById(pageId);
             if (targetPage) {
                 appContainer.style.opacity = '0';
                 setTimeout(() => {
                     targetPage.classList.add('active');
                     appContainer.style.opacity = '1';
-                    
-                    // Rola suavemente para o topo do novo card
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                    if (pageId === 'page3') setTimeout(triggerJumpscare, 500);
-                }, 200);
+                }, 400);
             }
         });
     }
 
+    // Clique na página 1 (blur overlay)
     const blurOverlay = document.getElementById('blurOverlay');
     if (blurOverlay) {
         blurOverlay.addEventListener('click', () => {
-            // Garante áudio no clique do card também
-            startAudioContext();
             navigateToPage('page2', horrorTransition1);
         });
     }
 
+    // Listener para todos os botões de navegação
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('next')) {
             const targetPage = e.target.getAttribute('data-page');
-            if (targetPage) navigateToPage(targetPage, horrorTransition2);
+            if (targetPage) {
+                navigateToPage(targetPage, horrorTransition2);
+            }
         }
     });
 });
