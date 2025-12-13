@@ -1,90 +1,80 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convite GAG</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Convite GAG</title>
+<link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
 
-  <!-- Sangue escorrendo -->
-  <div class="blood-drip"></div>
-  <div class="blood-drip"></div>
-  <div class="blood-drip"></div>
-  <div class="blood-drip"></div>
-  <div class="blood-drip"></div>
 
-  <!-- Transições de terror -->
-  <div class="horror-transition" id="horrorTransition1">
-    <!-- SVG Pennywise -->
-    <!-- (mantém exatamente como está no seu código original) -->
-  </div>
+<div class="blood-drip"></div>
+<div class="blood-drip"></div>
+<div class="blood-drip"></div>
+<div class="blood-drip"></div>
+<div class="blood-drip"></div>
 
-  <div class="horror-transition" id="horrorTransition2">
-    <!-- SVG Ghostface -->
-    <!-- (mantém exatamente como está no seu código original) -->
-  </div>
 
-  <!-- Jumpscare -->
-  <div class="jumpscare" id="jumpscare">
-    <img src="GAGsaw.jpg" alt="JUMPSCARE">
-  </div>
+<div class="horror-transition" id="horrorTransition1">[SVG PENNYWISE]</div>
+<div class="horror-transition" id="horrorTransition2">[SVG GHOSTFACE]</div>
 
-  <!-- Áudios -->
-  <audio id="bgAudio" src="babi2k.mp3" loop></audio>
-  <audio id="screamAudio" src="scream.mp3"></audio>
-  <button id="audioToggle">🔊</button>
 
-  <!-- APP -->
-  <div id="app-container">
+<div class="jumpscare" id="jumpscare">
+<img src="assets/GAGsaw.jpg" alt="JUMPSCARE" />
+</div>
 
-    <!-- Página 1 -->
-    <div id="page1" class="page active">
-      <div class="blur-overlay" id="blurOverlay">
-        <div class="click-hint">CLICA AQUI PUT@</div>
-        <div class="blur-content">
-          <div class="info-card">
-            <h2>ATENÇÃO, GAG!</h2>
-            <p>O evento mais GAG do ano será:</p>
-            <ul>
-              <li><strong>DATA:</strong> 31 de Dezembro, 2025</li>
-              <li><strong>HORA:</strong> A partir das 22h00</li>
-              <li><strong>LOCAL:</strong> Rua das Gags, Nº 69</li>
-            </ul>
-            <p>... E prepara-te para a regra de vestuário!</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Página 2 -->
-    <div id="page2" class="page">
-      <div class="info-card">
-        <div class="gagsaw-image">
-          <img src="GAGsaw.jpg" alt="GAGsaw">
-        </div>
-        <h2>ATENÇÃO, GAG!</h2>
-        <ul>
-          <li><strong>DATA:</strong> 31 de Dezembro, 2025</li>
-          <li><strong>HORA:</strong> A partir das 22h00</li>
-          <li><strong>LOCAL:</strong> Rua das Gags, Nº 69</li>
-        </ul>
-        <button class="next" data-page="page3">PRÓXIMO</button>
-      </div>
-    </div>
+<audio id="bgAudio" src="assets/babi2k.mp3" loop></audio>
+<audio id="screamAudio" src="assets/scream.mp3"></audio>
+<button id="audioToggle">🔊</button>
 
-    <!-- Página 3 -->
-    <div id="page3" class="page">
-      <div id="final-gag">
-        MENTIRA SEUS OTÁRIOS 😈<br><br>
-        PODEM IR DO JEITO QUE QUISEREM 👍🏻
-      </div>
-    </div>
 
-  </div>
+<div id="app-container">
+<div id="page1" class="page active">
+<div class="blur-overlay" id="blurOverlay">
+<div class="click-hint">CLICA AQUI PUT@</div>
+<div class="blur-content">
+<div class="info-card">
+<h2>ATENÇÃO, GAG!</h2>
+<p>O evento mais GAG do ano será:</p>
+<ul>
+<li><strong>DATA:</strong> 31 de Dezembro, 2025</li>
+<li><strong>HORA:</strong> A partir das 22h00</li>
+<li><strong>LOCAL:</strong> A Casa do Puto</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 
-  <script src="script.js"></script>
+
+<div id="page2" class="page">
+<div class="info-card">
+<div class="gagsaw-image">
+<img src="assets/GAGsaw.jpg" alt="GAGsaw" />
+</div>
+<h2>ATENÇÃO, GAG!</h2>
+<p>O evento mais GAG do ano será:</p>
+<ul>
+<li><strong>DATA:</strong> 31 de Dezembro, 2025</li>
+<li><strong>HORA:</strong> A partir das 22h00</li>
+<li><strong>LOCAL:</strong> A Casa do Puto</li>
+</ul>
+<button class="next" data-page="page3">PRÓXIMO</button>
+</div>
+</div>
+
+
+<div id="page3" class="page">
+<div id="final-gag">
+MENTIRA SEUS OTÁRIOS 😈<br /><br />
+PODEM IR DO JEITO QUE QUISEREM 👍🏻
+</div>
+</div>
+</div>
+
+
+<script src="js/script.js"></script>
 </body>
 </html>
