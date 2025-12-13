@@ -1232,7 +1232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Mensagens subliminares
-    function showSubliminalMessage() {
+     showSubliminalMessage() {
         const messages = ['BEHIND YOU', 'RUN', 'GET OUT', 'DON\'T LOOK BACK', 'THEY\'RE WATCHING'];
         const randomMsg = messages[Math.floor(Math.random() * messages.length)];
         subliminalMsg.textContent = randomMsg;
@@ -1241,20 +1241,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Rachadura na tela
-    function crackScreen() {
+     crackScreen() {
         screenCrack.classList.add('active');
         setTimeout(() => screenCrack.classList.remove('active'), 2000);
     }
 
     // Figura sombria passando
-    function shadowPass() {
+     shadowPass() {
         shadowFigure.style.left = '-200px';
         shadowFigure.classList.add('active');
         setTimeout(() => shadowFigure.classList.remove('active'), 3000);
     }
 
     // Mãos assustadoras
-    function creepyHands() {
+     creepyHands() {
         creepyHandLeft.classList.add('active');
         setTimeout(() => {
             creepyHandRight.classList.add('active');
@@ -1266,7 +1266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Pegadas de sangue
-    function createFootprints() {
+     createFootprints() {
         const positions = [
             { left: '20%', bottom: '60%' },
             { left: '25%', bottom: '45%' },
@@ -1286,13 +1286,105 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Mancha de sangue
-    function growBloodStain() {
-        bloodStain.style.left = '50%';
+     growBloodStain() {
+             bloodStain.style.left = '50%';
         bloodStain.style.top = '50%';
         bloodStain.style.transform = 'translate(-50%, -50%)';
         bloodStain.classList.add('active');
-        setTimeout(() => bloodStain.classList.remove('active'), 4000);
+
+        setTimeout(() => {
+            bloodStain.classList.remove('active');
+        }, 5000);
     }
+
+    // Disparo aleatório de efeitos
+    function randomScare() {
+        const effects = [
+            () => glitchEffect.classList.add('active'),
+            () => vhsEffect.classList.add('active'),
+            () => demonEyesLeft.classList.add('active'),
+            () => demonEyesRight.classList.add('active'),
+            activateFollowingEyes,
+            showSubliminalMessage,
+            crackScreen,
+            shadowPass,
+            creepyHands,
+            createFootprints,
+            growBloodStain
+        ];
+
+        const effect = effects[Math.floor(Math.random() * effects.length)];
+        effect();
+
+        setTimeout(() => {
+            glitchEffect.classList.remove('active');
+            vhsEffect.classList.remove('active');
+            demonEyesLeft.classList.remove('active');
+            demonEyesRight.classList.remove('active');
+        }, 2000);
+    }
+
+    // Navegação das páginas (mantendo sua lógica)
+    document.querySelectorAll('.next').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const currentPage = btn.closest('.page');
+            const nextPageId = btn.dataset.page;
+            const nextPage = document.getElementById(nextPageId);
+
+            if (!nextPage) return;
+
+            currentPage.classList.remove('active');
+
+            horrorTransition2.classList.add('active');
+            screenDarken.classList.add('active');
+
+            setTimeout(() => {
+                horrorTransition2.classList.remove('active');
+                screenDarken.classList.remove('active');
+                nextPage.classList.add('active');
+                randomScare();
+            }, 3500);
+        });
+    });
+
+    // Primeiro clique (blur inicial)
+    const blurOverlay = document.getElementById('blurOverlay');
+    if (blurOverlay) {
+        blurOverlay.addEventListener('click', () => {
+            document.querySelector('.blur-content').style.filter = 'none';
+            document.querySelector('.blur-content').style.opacity = '1';
+            blurOverlay.querySelector('.click-hint').style.display = 'none';
+
+            horrorTransition1.classList.add('active');
+            screenDarken.classList.add('active');
+
+            setTimeout(() => {
+                horrorTransition1.classList.remove('active');
+                screenDarken.classList.remove('active');
+                document.getElementById('page1').classList.remove('active');
+                document.getElementById('page2').classList.add('active');
+                randomScare();
+            }, 3500);
+        });
+    }
+
+    // Toggle de áudio manual
+    audioToggle.addEventListener('click', () => {
+        if (!audio) return;
+
+        if (audioPlaying) {
+            audio.pause();
+            audioPlaying = false;
+            audioToggle.textContent = '🔇';
+        } else {
+            audio.play().then(() => {
+                audioPlaying = true;
+                audioToggle.textContent = '🔊';
+            });
+        }
+    });
+});
+</script>
 
     // Som de grito
     function playScream() {
