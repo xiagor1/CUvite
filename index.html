@@ -675,26 +675,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
- let audioPlaying = false;
-    
-    audio.currentTime = 27;
-
-    const playAudio = () => {
-        if (!audioPlaying) {
-            // Garante que o áudio comece nos 27s se ainda estiver no início
-            if (audio.currentTime === 27) {
-                audio.currentTime = 27;
-            }
-
-            audio.play().then(() => {
-                audioPlaying = true;
-                audioToggle.textContent = '🔊';
-            }).catch(() => {
-                audioToggle.textContent = '🔇';
-            });
-        }
-    };
 
     // Clique na página 1 (blur overlay)
     const blurOverlay = document.getElementById('blurOverlay');
