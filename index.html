@@ -527,26 +527,9 @@ body::before {
     <img src="GAGsaw.jpg" alt="JUMPSCARE">
   </div>
 
-  <script>
-  const bgAudio = document.getElementById("bgAudio");
-  const screamAudio = document.getElementById("screamAudio");
-  const audioToggle = document.getElementById("audioToggle");
-
-  let audioOn = false;
-
-  audioToggle.addEventListener("click", () => {
-    if (!audioOn) {
-      bgAudio.currentTime = 13; // começa aos 13s
-      bgAudio.play();
-      audioToggle.textContent = "🔇";
-      audioOn = true;
-    } else {
-      bgAudio.pause();
-      audioToggle.textContent = "🔊";
-      audioOn = false;
-    }
-  });
-</script>
+  <audio id="bgAudio" src="babi2k.mp3" loop></audio>
+  <audio id="screamAudio" src="scream.mp3"></audio>
+  <button id="audioToggle">🔊</button>
 
   <div id="app-container">
     <!-- PÁGINA 1 - Preview embaçado -->
