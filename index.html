@@ -5,14 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Convite GAG</title>
 <style>
+    @font-face {
+    font-family: 'GhastlyPanic';
+    src: url('Ghastly Panic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   body {
+    font-family: 'GhastlyPanic', sans-serif;
     background: linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 100%);
     min-height: 100vh;
     display: flex;
@@ -22,6 +29,8 @@ body {
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
 }
 
 body::before {
