@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Convite GAG - Finalizado</title>
+<title>Convite GAG - Finalizado e Corrigido</title>
 <style>
 /* *** AVISO IMPORTANTE ***
-    Para que este código funcione corretamente, certifique-se de que os arquivos:
+    Este código assume que os arquivos:
     - GAGsaw.jpg (A imagem de susto)
     - babi2k.mp3 (O áudio de fundo)
-    ... ESTEJAM NO MESMO DIRETÓRIO DESTE ARQUIVO HTML.
+    ... ESTÃO ACESSÍVEIS NO MESMO DIRETÓRIO (ou seja, no seu repositório).
 */
 * {
     margin: 0;
@@ -107,55 +107,55 @@ body::before {
     opacity: 0.85;
 }
 
-.screen-flash {
+/* Mensagens subliminares */
+.subliminal-message {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle, rgba(139, 0, 0, 0.6) 0%, transparent 70%);
-    opacity: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #ff0000;
+    text-shadow: 0 0 30px #ff0000;
+    z-index: 99999;
     pointer-events: none;
-    z-index: 9999;
-    animation: flash 0.2s ease-out;
+    background: rgba(0, 0, 0, 0.9);
+    animation: subliminalFlash 0.15s ease-out;
 }
 
-@keyframes flash {
+.subliminal-message.active {
+    display: flex;
+}
+
+@keyframes subliminalFlash {
     0%, 100% { opacity: 0; }
     50% { opacity: 1; }
 }
 
-.horror-transition {
+/* Sombra de figura humana (manter a classe, mas pode ser melhorada se necessário) */
+.shadow-figure {
     position: fixed;
-    inset: 0;
-    background: #000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 99998;
+    bottom: -100%;
+    width: 200px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.9) 0%, transparent 70%);
+    z-index: 5;
+    opacity: 0;
     pointer-events: none;
+    display: none;
 }
 
-.horror-transition.active {
-    display: flex;
-    animation: horrorFade 4s ease-in-out forwards;
+.shadow-figure.active {
+    display: block;
+    animation: figureWalk 3s ease-in-out forwards;
 }
 
-@keyframes horrorFade {
-    0% { opacity: 0; }
-    15% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-.horror-transition svg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: slowZoom 4s ease-in-out;
-}
-
-@keyframes slowZoom {
-    0% { transform: scale(1.5); filter: brightness(0.3); }
-    50% { transform: scale(1); filter: brightness(0.8); }
-    100% { transform: scale(1.2); filter: brightness(0.4); }
+@keyframes figureWalk {
+    0% { bottom: -100%; opacity: 0; transform: translateX(-50px); }
+    30% { opacity: 0.8; }
+    70% { opacity: 0.8; }
+    100% { bottom: -100%; opacity: 0; transform: translateX(150vw); }
 }
 
 /* Efeito SHAKE (Tremor) */
@@ -172,6 +172,41 @@ body::before {
     90% { transform: translate(1px, 2px) rotate(0deg); }
 }
 
+/* NOVO: JUMPSCARE FINAL EM TELA CHEIA (Com tremor) */
+#final-jumpscare {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    opacity: 0;
+    transition: opacity 0.1s ease-out;
+}
+#final-jumpscare.active {
+    display: flex;
+    opacity: 1;
+}
+
+#jumpscare-image-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Aplicando o tremor no container da imagem */
+    animation: shake 0.08s ease-in-out infinite; 
+}
+
+#jumpscare-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    filter: contrast(1.5) saturate(2) brightness(1.2); 
+}
+
+/* Estilos de interface */
 #audioToggle {
     position: fixed;
     top: 25px;
@@ -388,18 +423,12 @@ body::before {
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(191, 247, 163, 0.08);
     border: 1px solid rgba(191, 247, 163, 0.25);
     text-align: center;
-    animation: fadeIn 0.9s ease, jumpBox 0.8s ease-in-out infinite;
+    animation: fadeIn 0.9s ease; /* Removendo o jumpBox para ficar mais limpo */
     font-size: 1.8rem;
     color: #e8f8e0;
     line-height: 1.8;
     position: relative;
     overflow: hidden;
-}
-
-/* Animação de pulo do quadrado */
-@keyframes jumpBox {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
 }
 
 /* Sangue escorrendo dentro do quadrado - realista */
@@ -446,141 +475,17 @@ body::before {
     z-index: 2;
 }
 
-/* Efeitos de glitch e distorção */
-.glitch-effect {
+/* Efeitos adicionais (mantidos do código anterior para compatibilidade) */
+.glitch-effect, .vhs-effect {
     position: fixed;
     inset: 0;
-    background: #000;
     z-index: 9997;
-    opacity: 0;
-    pointer-events: none;
-    mix-blend-mode: difference;
-    display: none;
-}
-
-.glitch-effect.active {
-    display: block;
-    animation: glitchFlash 0.5s steps(5) 3;
-}
-
-@keyframes glitchFlash {
-    0%, 100% { opacity: 0; }
-    10%, 30%, 50%, 70%, 90% { opacity: 1; }
-    20%, 40%, 60%, 80% { opacity: 0; }
-}
-
-/* Efeito VHS */
-.vhs-effect {
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 2px);
-    pointer-events: none;
-    z-index: 9996;
-    opacity: 0;
-    animation: vhsScan 0.1s linear infinite;
-    display: none;
-}
-
-.vhs-effect.active {
-    display: block;
-    opacity: 0.4;
-}
-
-@keyframes vhsScan {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(2px); }
-}
-
-/* Mensagens subliminares */
-.subliminal-message {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    font-weight: 900;
-    color: #ff0000;
-    text-shadow: 0 0 30px #ff0000;
-    z-index: 99999;
-    pointer-events: none;
-    background: rgba(0, 0, 0, 0.9);
-    animation: subliminalFlash 0.15s ease-out;
-}
-
-.subliminal-message.active {
-    display: flex;
-}
-
-@keyframes subliminalFlash {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
-}
-
-/* Sombra de figura humana */
-.shadow-figure {
-    position: fixed;
-    bottom: -100%;
-    width: 200px;
-    height: 400px;
-    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.9) 0%, transparent 70%);
-    z-index: 5;
-    opacity: 0;
     pointer-events: none;
     display: none;
 }
+.glitch-effect.active { animation: none; display: block; opacity: 0; }
+.vhs-effect.active { animation: none; display: block; opacity: 0; }
 
-.shadow-figure.active {
-    display: block;
-    animation: figureWalk 3s ease-in-out forwards;
-}
-
-@keyframes figureWalk {
-    0% { bottom: -100%; opacity: 0; transform: translateX(-50px); }
-    30% { opacity: 0.8; }
-    70% { opacity: 0.8; }
-    100% { bottom: -100%; opacity: 0; transform: translateX(150vw); }
-}
-
-/* NOVO: JUMPSCARE FINAL EM TELA CHEIA (Após o botão 'É ISSO NEGAS') */
-#final-jumpscare {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 100000;
-    opacity: 0;
-    transition: opacity 0.1s ease-out;
-}
-#final-jumpscare.active {
-    display: flex;
-    opacity: 1;
-}
-
-#jumpscare-image-container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Aplicando o tremor */
-    animation: shake 0.1s ease-in-out infinite; 
-}
-
-#jumpscare-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-    filter: contrast(1.5) saturate(2) brightness(1.2); 
-}
-
-/* Efeitos de olhos e outros que não foram completamente definidos no CSS anterior, mas mantidos para compatibilidade */
-.following-eyes, .demon-eyes, .shadow-creep, .heartbeat-pulse, .ambient-fog, .whisper-text, .screen-crack, .blood-footprint, .creepy-hand, .blood-stain, #horrorTransition1, #horrorTransition2 {
-    /* Garante que estes elementos fiquem ocultos até serem ativados pelo JS */
-    display: none; 
-}
 
 @media (max-width: 600px) {
     .card, .info-card, #final-gag { padding: 50px 35px; }
@@ -614,27 +519,6 @@ body::before {
     <audio id="screamSound" src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnODyvmwhBTGH0fPTgjMGHm7A7+OZSA0PVqzn77FeFg=="></audio>
     <audio id="breathSound"></audio>
     <audio id="laughSound"></audio>
-
-    <div class="glitch-effect" id="glitchEffect"></div>
-    <div class="vhs-effect" id="vhsEffect"></div>
-    <div class="shadow-creep" id="shadowCreep"></div>
-    <div class="heartbeat-pulse" id="heartbeatPulse"></div>
-    <div class="ambient-fog" id="ambientFog1" style="left: 10%; top: 20%;"></div>
-    <div class="ambient-fog" id="ambientFog2" style="right: 15%; top: 40%;"></div>
-    <div class="ambient-fog" id="ambientFog3" style="left: 20%; bottom: 30%;"></div>
-    <div class="demon-eyes" id="demonEyesLeft" style="left: 20px; top: 30%;"></div>
-    <div class="demon-eyes" id="demonEyesRight" style="right: 20px; top: 40%;"></div>
-    <div class="following-eyes" id="followingEyes1" style="left: 50px; top: 30%;"></div>
-    <div class="following-eyes" id="followingEyes2" style="right: 50px; top: 50%;"></div>
-    <div class="screen-crack" id="screenCrack"></div>
-    <div class="creepy-hand left" id="creepyHandLeft"></div>
-    <div class="creepy-hand right" id="creepyHandRight"></div>
-    <div class="blood-footprint" id="footprint1"></div>
-    <div class="blood-footprint" id="footprint2"></div>
-    <div class="blood-footprint" id="footprint3"></div>
-    <div class="blood-stain" id="bloodStain"></div>
-    <div class="horror-transition" id="horrorTransition1"></div>
-    <div class="horror-transition" id="horrorTransition2"></div>
 
     <audio id="bgAudio" src="babi2k.mp3" loop></audio>
     <button id="audioToggle">🔊</button>
@@ -683,7 +567,8 @@ body::before {
                 <div class="blood-drip-inside"></div>
                 <div class="blood-drip-inside"></div>
                 <div id="final-gag-text">
-                    PAREM DE SER OTÁRIOS. A REGRA É...
+                    PAREM DE SER OTÁRIOS. A REGRA É QUE...<br><br>
+                    <span style="color: #ff0000; font-weight: 900; text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);">TODOS VÃO DE TRAVESTI</span>
                 </div>
                 <button class="next" id="final-susto-button" data-page="jumpscare" style="margin-top: 50px;">
                     É ISSO NEGAS
@@ -708,11 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const screenDarken = document.getElementById('screenDarken');
     const subliminalMsg = document.getElementById('subliminalMsg');
     const shadowFigure = document.getElementById('shadowFigure'); 
-    const glitchEffect = document.getElementById('glitchEffect');
-    const vhsEffect = document.getElementById('vhsEffect');
-    const finalSustoButton = document.getElementById('final-susto-button');
-
-
+    
     // Duração aumentada da mensagem subliminar (em milissegundos)
     const SUBLIMINAL_DURATION = 1500; 
 
@@ -739,32 +620,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicia o áudio de fundo (Chamado no primeiro clique)
     function playAudioSafe() {
         if (!isAudioPlaying) {
+            // Tenta tocar o áudio
             audio.play().then(() => {
                 isAudioPlaying = true;
                 audioToggle.textContent = '🔊';
             }).catch(error => {
-                console.error("Falha ao iniciar o áudio de fundo:", error);
+                console.warn("Falha ao iniciar o áudio de fundo (interação necessária).", error);
+                // Se falhar, o áudio Toggle ainda pode ser usado.
+                isAudioPlaying = false; 
+                audioToggle.textContent = '🔇';
             });
         }
     }
 
-    // --- NOVO: Lógica do Jumpscare Final de Tela Cheia ---
+    // --- Lógica do Jumpscare Final de Tela Cheia ---
     function triggerFinalJumpscare() {
         // 1. Para o áudio de fundo
         audio.pause(); 
+        isAudioPlaying = false;
         
         // 2. Escurece a tela e esconde o conteúdo
         screenDarken.classList.add('active');
         appContainer.style.opacity = '0';
         
         // 3. Ativa o Jumpscare
+        // Ele vai aparecer com o efeito shake do CSS
         finalJumpscare.classList.add('active');
 
         // 4. Jumpscare subliminar curto no momento do susto
-        triggerSubliminal("SAW", 800); 
+        triggerSubliminal("SAW"); 
 
-        // 5. Toca o grito (se o arquivo estiver disponível)
+        // 5. Toca o grito
         screamSound.currentTime = 0; 
+        // O grito está em data URI, deve funcionar, mas pode ser lento.
         screamSound.play().catch(e => console.error("Erro ao tocar GRITO:", e));
     }
 
@@ -780,24 +668,30 @@ document.addEventListener('DOMContentLoaded', () => {
         // Garante que o áudio seja iniciado antes da transição (após o clique inicial)
         playAudioSafe();
 
+        // Escurece e troca a página
+        setActive(screenDarken, 400); // Escurece por 0.4s
+        appContainer.style.opacity = '0';
+        
         setTimeout(() => {
             document.getElementById(currentPage).classList.remove('active');
             const targetPage = document.getElementById(targetPageId);
             targetPage.classList.add('active');
             currentPage = targetPageId;
             
+            // Retorna o container para 100% de opacidade
             appContainer.style.opacity = '1';
+            
+            // Limpa a escuridão
+            screenDarken.classList.remove('active');
             
             // Efeitos específicos da página
             if (targetPageId === 'page2') {
-                setActive(vhsEffect, 3000); 
+                triggerSubliminal("OLHA");
             } else if (targetPageId === 'page3') {
-                setActive(glitchEffect, 2000); 
+                triggerSubliminal("AGORA");
             }
-
-            // Limpa a escuridão
-            screenDarken.classList.remove('active');
-        }, 400); 
+            
+        }, 500); // Tempo para a transição
     }
 
 
@@ -813,14 +707,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.blur-content').style.filter = 'none';
             document.querySelector('.blur-content').style.opacity = '1';
             
-            // 2. Escurece a tela para o susto leve
-            setActive(screenDarken, 1500);
-            
-            // 3. Jumpscare leve e efeitos subliminares
+            // 2. Escurece a tela para o susto leve e transiciona
+            setActive(screenDarken, 1800); // Escurece por 1.8s
             triggerSubliminal("RUN"); 
             setActive(shadowFigure, 3000); // Sombra aparece/anda
 
-            // 4. Transição para Page 2 após o susto leve
+            // 3. Transição para Page 2 após o susto leve
             setTimeout(() => {
                 switchPage('page2');
             }, 1800); 
@@ -832,19 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', (e) => {
             const targetPageId = e.target.getAttribute('data-page');
             if (targetPageId) {
-                // Se for o botão final, não faz o fade e vai direto para o jumpscare
-                if (targetPageId === 'jumpscare') {
-                    triggerFinalJumpscare();
-                    return;
-                }
-                
-                // Transições intermediárias:
-                setActive(screenDarken, 1000);
-                triggerSubliminal("AGORA");
-                
-                setTimeout(() => {
-                    switchPage(targetPageId);
-                }, 1000);
+                switchPage(targetPageId);
             }
         });
     });
@@ -861,16 +741,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioToggle.textContent = '🔊';
             }).catch(error => {
                 console.error("Falha ao tocar o áudio manual:", error);
+                isAudioPlaying = false;
+                audioToggle.textContent = '🔇';
             });
         }
     });
 
     // --- INICIALIZAÇÃO ---
-    // Ativa efeitos ambientais iniciais
     document.querySelectorAll('.blood-drip').forEach(drip => drip.style.display = 'block');
-    document.getElementById('ambientFog1').classList.add('active');
-    document.getElementById('ambientFog2').classList.add('active');
-    document.getElementById('ambientFog3').classList.add('active');
 });
 </script>
 </body>
