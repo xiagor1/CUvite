@@ -1,541 +1,46 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Convite GAG</title>
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Efeito de névoa/fumaça animada */
-body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(191, 247, 163, 0.03) 0%, transparent 50%);
-    animation: float 20s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 0;
-}
-
-@keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(30px, 30px) scale(1.1); }
-}
-
-/* Efeito de sangue escorrendo */
-.blood-drip {
-    position: fixed;
-    width: 3px;
-    background: linear-gradient(180deg, rgba(139, 0, 0, 0.8) 0%, rgba(139, 0, 0, 0) 100%);
-    animation: drip 3s ease-in infinite;
-    pointer-events: none;
-    z-index: 999;
-    border-radius: 0 0 50% 50%;
-}
-
-@keyframes drip {
-    0% {
-        height: 0;
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    100% {
-        height: 80vh;
-        opacity: 0;
-    }
-}
-
-.blood-drip:nth-child(1) { left: 15%; animation-delay: 0.5s; }
-.blood-drip:nth-child(2) { left: 35%; animation-delay: 1.2s; width: 4px; }
-.blood-drip:nth-child(3) { left: 58%; animation-delay: 0.8s; }
-.blood-drip:nth-child(4) { left: 72%; animation-delay: 1.5s; width: 5px; }
-.blood-drip:nth-child(5) { left: 88%; animation-delay: 0.3s; }
-
-/* Flash de tela (piscar vermelho) */
-.screen-flash {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle, rgba(139, 0, 0, 0.6) 0%, transparent 70%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9999;
-    animation: flash 0.15s ease-out;
-}
-
-@keyframes flash {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
-}
-
-/* Transição assustadora - Container */
-.horror-transition {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99998;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.horror-transition.active {
-    animation: horrorFade 4s ease-in-out forwards;
-}
-
-@keyframes horrorFade {
-    0% { opacity: 0; }
-    15% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-.horror-transition img, .horror-transition svg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: slowZoom 4s ease-in-out;
-}
-
-@keyframes slowZoom {
-    0% { transform: scale(1.5); filter: brightness(0.3); }
-    50% { transform: scale(1); filter: brightness(0.8); }
-    100% { transform: scale(1.2); filter: brightness(0.4); }
-}
-
-/* Jumpscare effect para página 3 */
-.jumpscare {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.jumpscare.active {
-    animation: jumpscareAnim 2.5s ease-out forwards;
-}
-
-@keyframes jumpscareAnim {
-    0% { opacity: 0; }
-    5% { opacity: 1; }
-    95% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-.jumpscare img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: shake 0.15s infinite;
-}
-
-@keyframes shake {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(-10px, 10px) rotate(-2deg); }
-    50% { transform: translate(10px, -10px) rotate(2deg); }
-    75% { transform: translate(-10px, -10px) rotate(-1deg); }
-}
-
-#audioToggle {
-    position: fixed;
-    top: 25px;
-    right: 25px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(191, 247, 163, 0.3);
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                inset 0 0 15px rgba(191, 247, 163, 0.1);
-    color: #BFF7A3;
-}
-
-#audioToggle:hover {
-    background: rgba(255, 255, 255, 0.12);
-    transform: scale(1.08);
-    box-shadow: 0 6px 25px rgba(191, 247, 163, 0.4),
-                inset 0 0 20px rgba(191, 247, 163, 0.15);
-}
-
-#app-container {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    max-width: 500px;
-    transition: opacity 0.4s ease;
-}
-
-.card {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 60px 45px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
-                inset 0 0 30px rgba(191, 247, 163, 0.08);
-    text-align: center;
-    position: relative;
-    border: 1px solid rgba(191, 247, 163, 0.25);
-    animation: fadeIn 0.9s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(35px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Página 1 - Preview embaçado */
-.blur-overlay {
-    position: relative;
-    cursor: pointer;
-}
-
-.blur-content {
-    filter: blur(15px);
-    opacity: 0.5;
-    transition: all 0.3s ease;
-}
-
-.blur-overlay:hover .blur-content {
-    filter: blur(12px);
-    opacity: 0.6;
-}
-
-.click-hint {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    color: #BFF7A3;
-    font-weight: 700;
-    text-shadow: 0 0 30px rgba(191, 247, 163, 0.8);
-    pointer-events: none;
-    animation: pulse-hint 2s ease-in-out infinite;
-    z-index: 1;
-}
-
-@keyframes pulse-hint {
-    0%, 100% { 
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-    50% { 
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 0.8;
-    }
-}
-
-/* Imagem do boneco GAGsaw */
-.gagsaw-image {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 35px;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid rgba(191, 247, 163, 0.4);
-    box-shadow: 0 0 30px rgba(191, 247, 163, 0.3),
-                inset 0 0 20px rgba(0, 0, 0, 0.5);
-    animation: pulse-glow 3s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-    0%, 100% { 
-        box-shadow: 0 0 30px rgba(191, 247, 163, 0.3),
-                    inset 0 0 20px rgba(0, 0, 0, 0.5);
-        transform: scale(1);
-    }
-    50% { 
-        box-shadow: 0 0 50px rgba(191, 247, 163, 0.5),
-                    0 0 80px rgba(191, 247, 163, 0.2),
-                    inset 0 0 30px rgba(0, 0, 0, 0.6);
-        transform: scale(1.03);
-    }
-}
-
-.gagsaw-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.9) contrast(1.1);
-}
-
-.title {
-    font-size: 3.5rem;
-    color: #BFF7A3;
-    margin-bottom: 28px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    line-height: 1.1;
-    text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);
-}
-
-.page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-}
-
-.message {
-    font-size: 1.3rem;
-    color: #e8f8e0;
-    line-height: 1.9;
-    margin-bottom: 35px;
-    font-weight: 300;
-}
-
-.next {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 16px 45px;
-    background: rgba(191, 247, 163, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #BFF7A3;
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    border: 2px solid rgba(191, 247, 163, 0.4);
-    box-shadow: 0 0 20px rgba(191, 247, 163, 0.3);
-    cursor: pointer;
-}
-
-.next:hover {
-    background: rgba(191, 247, 163, 0.25);
-    border-color: rgba(191, 247, 163, 0.6);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(191, 247, 163, 0.4);
-}
-
-/* Page 2 Styles */
-.info-card {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 60px 45px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
-                inset 0 0 30px rgba(191, 247, 163, 0.08);
-    animation: fadeIn 0.9s ease;
-    border: 1px solid rgba(191, 247, 163, 0.25);
-    text-align: center;
-}
-
-.info-card h2 {
-    font-size: 2.5rem;
-    color: #BFF7A3;
-    margin-bottom: 35px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-shadow: 0 0 20px rgba(191, 247, 163, 0.5);
-}
-
-.info-card p {
-    color: #d0f0c0;
-    font-size: 1.15rem;
-    line-height: 1.9;
-    margin-bottom: 28px;
-    font-weight: 300;
-}
-
-.info-card ul {
-    list-style: none;
-    text-align: left;
-    margin: 35px 0;
-    padding: 0;
-    border-top: 1px solid rgba(191, 247, 163, 0.2);
-    border-bottom: 1px solid rgba(191, 247, 163, 0.2);
-    padding: 30px 0;
-}
-
-.info-card li {
-    color: #e8f8e0;
-    font-size: 1.05rem;
-    margin-bottom: 20px;
-    padding-left: 30px;
-    position: relative;
-    line-height: 1.7;
-    font-weight: 300;
-}
-
-.info-card li:last-child {
-    margin-bottom: 0;
-}
-
-.info-card li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 8px;
-    height: 8px;
-    background: #BFF7A3;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(191, 247, 163, 0.8);
-}
-
-.info-card strong {
-    font-weight: 600;
-    color: #BFF7A3;
-}
-
-/* Page 3 Styles */
-#final-gag {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 70px 45px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
-                inset 0 0 30px rgba(191, 247, 163, 0.08);
-    border: 1px solid rgba(191, 247, 163, 0.25);
-    text-align: center;
-    animation: fadeIn 0.9s ease;
-    font-size: 1.8rem;
-    color: #e8f8e0;
-    line-height: 1.8;
-}
-
-@media (max-width: 600px) {
-    .card, .info-card, #final-gag {
-        padding: 50px 35px;
-    }
-    
-    .title, .click-hint {
-        font-size: 2.5rem;
-    }
-    
-    .gagsaw-image {
-        width: 160px;
-        height: 160px;
-    }
-    
-    .info-card h2 {
-        font-size: 2rem;
-    }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convite GAG</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <!-- Efeito de sangue escorrendo -->
+  <!-- Sangue escorrendo -->
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
   <div class="blood-drip"></div>
 
-  <!-- Horror transitions -->
+  <!-- Transições de terror -->
   <div class="horror-transition" id="horrorTransition1">
-    <!-- Pennywise (IT) -->
-    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="bgGrad">
-          <stop offset="0%" style="stop-color:#0a1f0a;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
-        </radialGradient>
-      </defs>
-      <rect width="400" height="400" fill="url(#bgGrad)"/>
-      <!-- Rosto verde-negro -->
-      <ellipse cx="200" cy="180" rx="80" ry="95" fill="#1a3a1a" stroke="#BFF7A3" stroke-width="2"/>
-      <!-- Cabelo verde -->
-      <path d="M 120 140 Q 110 100 120 80 Q 140 60 160 70 Q 180 50 200 55 Q 220 50 240 70 Q 260 60 280 80 Q 290 100 280 140" fill="#2d5a2d" opacity="0.9"/>
-      <!-- Olhos aterrorizantes verdes -->
-      <ellipse cx="175" cy="165" rx="12" ry="18" fill="#000"/>
-      <ellipse cx="225" cy="165" rx="12" ry="18" fill="#000"/>
-      <circle cx="177" cy="162" r="4" fill="#BFF7A3"/>
-      <circle cx="227" cy="162" r="4" fill="#BFF7A3"/>
-      <!-- Nariz verde -->
-      <circle cx="200" cy="190" r="12" fill="#8bc378"/>
-      <!-- Boca assustadora verde -->
-      <path d="M 160 210 Q 200 240 240 210" stroke="#BFF7A3" stroke-width="4" fill="none"/>
-      <path d="M 165 215 L 168 225 M 180 220 L 182 232 M 200 225 L 200 238 M 220 220 L 218 232 M 235 215 L 232 225" stroke="#d0f0c0" stroke-width="2"/>
-      <!-- Sombras -->
-      <ellipse cx="200" cy="260" rx="60" ry="8" fill="#000" opacity="0.3"/>
-      <!-- Texto -->
-      <text x="200" y="340" font-family="serif" font-size="32" fill="#BFF7A3" text-anchor="middle" font-weight="bold">YOU'LL FLOAT TOO...</text>
-    </svg>
+    <!-- SVG Pennywise -->
+    <!-- (mantém exatamente como está no seu código original) -->
   </div>
 
   <div class="horror-transition" id="horrorTransition2">
-    <!-- Ghostface (Scream) -->
-    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-      <rect width="400" height="400" fill="#000000"/>
-      <!-- Máscara verde-negra -->
-      <path d="M 200 80 Q 160 85 140 110 Q 130 140 135 170 Q 140 210 155 240 Q 170 270 200 280 Q 230 270 245 240 Q 260 210 265 170 Q 270 140 260 110 Q 240 85 200 80 Z" fill="#1a3a1a" stroke="#BFF7A3" stroke-width="3"/>
-      <!-- Olhos -->
-      <ellipse cx="175" cy="150" rx="18" ry="35" fill="#000" transform="rotate(-15 175 150)"/>
-      <ellipse cx="225" cy="150" rx="18" ry="35" fill="#000" transform="rotate(15 225 150)"/>
-      <!-- Brilho verde nos olhos -->
-      <ellipse cx="178" cy="145" rx="4" ry="8" fill="#BFF7A3" opacity="0.6"/>
-      <ellipse cx="222" cy="145" rx="4" ry="8" fill="#BFF7A3" opacity="0.6"/>
-      <!-- Boca gritando -->
-      <ellipse cx="200" cy="210" rx="15" ry="35" fill="#000"/>
-      <path d="M 185 205 Q 200 190 215 205" stroke="#000" stroke-width="3" fill="none"/>
-      <!-- Sombras verdes -->
-      <path d="M 140 110 Q 145 130 150 150" stroke="#8bc378" stroke-width="1" fill="none" opacity="0.5"/>
-      <path d="M 260 110 Q 255 130 250 150" stroke="#8bc378" stroke-width="1" fill="none" opacity="0.5"/>
-      <!-- Texto -->
-      <text x="200" y="350" font-family="serif" font-size="28" fill="#BFF7A3" text-anchor="middle" font-weight="bold">WHAT'S YOUR FAVORITE</text>
-      <text x="200" y="380" font-family="serif" font-size="28" fill="#BFF7A3" text-anchor="middle" font-weight="bold">SCARY MOVIE?</text>
-    </svg>
+    <!-- SVG Ghostface -->
+    <!-- (mantém exatamente como está no seu código original) -->
   </div>
 
-  <!-- Jumpscare overlay -->
+  <!-- Jumpscare -->
   <div class="jumpscare" id="jumpscare">
     <img src="GAGsaw.jpg" alt="JUMPSCARE">
   </div>
 
+  <!-- Áudios -->
   <audio id="bgAudio" src="babi2k.mp3" loop></audio>
   <audio id="screamAudio" src="scream.mp3"></audio>
   <button id="audioToggle">🔊</button>
 
+  <!-- APP -->
   <div id="app-container">
-    <!-- PÁGINA 1 - Preview embaçado -->
+
+    <!-- Página 1 -->
     <div id="page1" class="page active">
       <div class="blur-overlay" id="blurOverlay">
         <div class="click-hint">CLICA AQUI PUT@</div>
@@ -544,9 +49,9 @@ body::before {
             <h2>ATENÇÃO, GAG!</h2>
             <p>O evento mais GAG do ano será:</p>
             <ul>
-              <li><strong>DATA:</strong> 31 de Dezembro, 2025 (Fim de Ano)</li>
+              <li><strong>DATA:</strong> 31 de Dezembro, 2025</li>
               <li><strong>HORA:</strong> A partir das 22h00</li>
-              <li><strong>LOCAL:</strong> A Casa do Puto, Rua das Gags, Nº 69</li>
+              <li><strong>LOCAL:</strong> Rua das Gags, Nº 69</li>
             </ul>
             <p>... E prepara-te para a regra de vestuário!</p>
           </div>
@@ -554,149 +59,32 @@ body::before {
       </div>
     </div>
 
-    <!-- PÁGINA 2 - Informações com imagem GAGsaw -->
+    <!-- Página 2 -->
     <div id="page2" class="page">
       <div class="info-card">
         <div class="gagsaw-image">
           <img src="GAGsaw.jpg" alt="GAGsaw">
         </div>
         <h2>ATENÇÃO, GAG!</h2>
-        <p>O evento mais GAG do ano será:</p>
         <ul>
-          <li><strong>DATA:</strong> 31 de Dezembro, 2025 (Fim de Ano)</li>
+          <li><strong>DATA:</strong> 31 de Dezembro, 2025</li>
           <li><strong>HORA:</strong> A partir das 22h00</li>
-          <li><strong>LOCAL:</strong> A Casa do Puto, Rua das Gags, Nº 69</li>
+          <li><strong>LOCAL:</strong> Rua das Gags, Nº 69</li>
         </ul>
-        <p>... E prepara-te para a regra de vestuário!</p>
         <button class="next" data-page="page3">PRÓXIMO</button>
       </div>
     </div>
 
-    <!-- PÁGINA 3 - Revelação final -->
+    <!-- Página 3 -->
     <div id="page3" class="page">
       <div id="final-gag">
         MENTIRA SEUS OTÁRIOS 😈<br><br>
         PODEM IR DO JEITO QUE QUISEREM 👍🏻
       </div>
     </div>
+
   </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const audio = document.getElementById('bgAudio');
-    const screamAudio = document.getElementById('screamAudio');
-    const audioToggle = document.getElementById('audioToggle');
-    const appContainer = document.getElementById('app-container');
-    const jumpscare = document.getElementById('jumpscare');
-    const horrorTransition1 = document.getElementById('horrorTransition1');
-    const horrorTransition2 = document.getElementById('horrorTransition2');
-
-    let audioPlaying = false;
-    
-    const playAudio = () => {
-        if (!audioPlaying) {
-            audio.play().then(() => {
-                audioPlaying = true;
-                audioToggle.textContent = '🔊';
-            }).catch(() => {
-                audioToggle.textContent = '🔇';
-            });
-        }
-    };
-
-    playAudio();
-
-    const startAudioOnInteraction = () => {
-        playAudio();
-        document.removeEventListener('click', startAudioOnInteraction);
-        document.removeEventListener('touchstart', startAudioOnInteraction);
-    };
-
-    document.addEventListener('click', startAudioOnInteraction);
-    document.addEventListener('touchstart', startAudioOnInteraction);
-
-    function createScreenFlash() {
-        const flash = document.createElement('div');
-        flash.className = 'screen-flash';
-        document.body.appendChild(flash);
-        setTimeout(() => flash.remove(), 150);
-    }
-
-    function triggerJumpscare() {
-        jumpscare.classList.add('active');
-        screamAudio.play().catch(() => console.log('Scream audio blocked'));
-        
-        setTimeout(() => {
-            jumpscare.classList.remove('active');
-        }, 2500);
-    }
-
-    // Transição de terror
-    function showHorrorTransition(transitionElement, callback) {
-        transitionElement.classList.add('active');
-        
-        setTimeout(() => {
-            transitionElement.classList.remove('active');
-            if (callback) callback();
-        }, 4000);
-    }
-
-    if (audioToggle && audio) {
-        audioToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (audio.paused) {
-                audio.play().then(() => {
-                    audioPlaying = true;
-                    audioToggle.textContent = '🔊';
-                });
-            } else {
-                audio.pause();
-                audioPlaying = false;
-                audioToggle.textContent = '🔇';
-            }
-        });
-    }
-
-    function navigateToPage(pageId, transitionElement) {
-        createScreenFlash();
-        
-        // Mostra transição de terror
-        showHorrorTransition(transitionElement, () => {
-            // Esconde todas as páginas
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Mostra a página solicitada
-            const targetPage = document.getElementById(pageId);
-            if (targetPage) {
-                appContainer.style.opacity = '0';
-                setTimeout(() => {
-                    targetPage.classList.add('active');
-                    appContainer.style.opacity = '1';
-                }, 400);
-            }
-        });
-    }
-
-    // Clique na página 1 (blur overlay)
-    const blurOverlay = document.getElementById('blurOverlay');
-    if (blurOverlay) {
-        blurOverlay.addEventListener('click', () => {
-            navigateToPage('page2', horrorTransition1);
-        });
-    }
-
-    // Listener para todos os botões de navegação
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('next')) {
-            const targetPage = e.target.getAttribute('data-page');
-            if (targetPage) {
-                navigateToPage(targetPage, horrorTransition2);
-            }
-        }
-    });
-});
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
